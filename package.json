@@ -11,9 +11,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.x",
-    "@astrojs/tailwind": "^6.x",
     "@astrojs/react": "^4.x",
+    "@astrojs/tailwind": "^6.x",
+    "@tailwindcss/postcss": "^4.2.2",
+    "astro": "^5.x",
     "react": "^19.x",
     "react-dom": "^19.x",
     "tailwindcss": "^4.x"

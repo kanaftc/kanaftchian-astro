@@ -1,21 +1,10 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
 import react from '@astrojs/react';
 
-// https://astro.build/config
 export default defineConfig({
-  site: 'https://kanaftchian.com',
+  site: 'https://kanaftc.github.io',
+  base: '/kanaftchian-astro',
   integrations: [
-    tailwind(),
     react(),
   ],
-  image: {
-    // Optimisation automatique des images
-    service: { entrypoint: 'astro/assets/services/sharp' },
-  },
-  vite: {
-    ssr: {
-      noExternal: [],
-    },
-  },
 });

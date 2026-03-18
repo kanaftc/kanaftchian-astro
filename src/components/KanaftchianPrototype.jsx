@@ -811,20 +811,16 @@ function HomePage({ navigate }) {
           <FadeIn delay={0.15}>
             <div style={{
               position: "relative", aspectRatio: "16/9", background: C.surface,
-              overflow: "hidden", cursor: "pointer", borderRadius: 2,
+              overflow: "hidden", borderRadius: 2,
             }}>
-              <img src={IMAGES.aboutHero} alt="Hani Kanaftchian" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.7 }} />
-              <div style={{
-                position: "absolute", inset: 0,
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}>
-                <div style={{
-                  width: 80, height: 80, borderRadius: "50%",
-                  border: `2px solid ${C.accent}`, background: `${C.bg}80`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 24, color: C.accent,
-                }}>▶</div>
-              </div>
+              <iframe
+                src="https://www.youtube.com/embed/BQI02ASMMgk?rel=0&modestbranding=1&color=white"
+                style={{ width: "100%", height: "100%", border: "none" }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title="Hani Kanaftchian — Photographe Bruxelles"
+                loading="lazy"
+              />
             </div>
           </FadeIn>
         </div>
