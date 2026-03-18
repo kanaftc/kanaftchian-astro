@@ -488,7 +488,7 @@ function Nav({ currentSlug, navigate, scrollY }) {
           src={IMAGES.logo}
           alt="Hani Kanaftchian — Photographe Bruxelles"
           style={{
-            height: scrolled ? 32 : 40,
+            height: scrolled ? 44 : 58,
             width: "auto",
             objectFit: "contain",
             transition: "height 0.5s cubic-bezier(0.22,1,0.36,1)",
@@ -597,7 +597,7 @@ function Footer({ navigate }) {
           <img
             src={IMAGES.logo}
             alt="Kanaftchian"
-            style={{ height: 40, width: "auto", marginBottom: 16, objectFit: "contain" }}
+            style={{ height: 50, width: "auto", marginBottom: 16, objectFit: "contain", filter: "brightness(1.15)" }}
           />
           <p style={{ fontFamily: F.body, fontSize: 14, color: C.textDim, lineHeight: 1.7, maxWidth: 280 }}>
             Photographe professionnel à Bruxelles.<br />{SITE.tagline}
