@@ -1,0 +1,163 @@
+/* ════════════════════════════════════════════════════════════════
+   KANAFTCHIAN.COM — Global Styles
+   Design System: Cinematic Dark / Art Gallery
+   ════════════════════════════════════════════════════════════════ */
+
+@import "tailwindcss";
+
+/* ─── Custom Properties ────────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --color-bg: #050507;
+  --color-bg-alt: #0A0A0F;
+  --color-surface: #111116;
+  --color-surface-hover: #18181F;
+
+  /* Borders */
+  --color-border: #1A1A24;
+  --color-border-light: #2A2A38;
+
+  /* Text */
+  --color-text: #E8E8F0;
+  --color-text-muted: #8888A0;
+  --color-text-dim: #55556A;
+
+  /* Accent — warm gold */
+  --color-accent: #C8A87C;
+  --color-accent-light: #E0C9A0;
+  --color-accent-dim: #8B7355;
+
+  /* Typography */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Transitions */
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ─── Base Reset ───────────────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) var(--color-bg);
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Selection ────────────────────────────────────────────── */
+::selection {
+  background: rgba(200, 168, 124, 0.2);
+  color: #FFFFFF;
+}
+
+/* ─── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(200, 168, 124, 0.4); }
+
+/* ─── Images ───────────────────────────────────────────────── */
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ─── Animations ───────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 0.8; transform: scaleY(1.4); }
+}
+
+@keyframes parallaxFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ─── Utility Classes ──────────────────────────────────────── */
+.animate-fade-in {
+  animation: fadeIn 0.8s var(--ease-premium) forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.9s var(--ease-premium) forwards;
+}
+
+.section-padding {
+  padding: 100px 40px;
+}
+
+.container-xl {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.container-lg {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ─── Typography Utilities ─────────────────────────────────── */
+.font-display { font-family: var(--font-display); }
+.font-body { font-family: var(--font-body); }
+
+.text-accent { color: var(--color-accent); }
+.text-muted { color: var(--color-text-muted); }
+.text-dim { color: var(--color-text-dim); }
+
+.section-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4.5vw, 56px);
+  font-weight: 300;
+  color: var(--color-text);
+  line-height: 1.15;
+}
+
+.section-title em,
+.section-title .accent {
+  font-style: italic;
+  color: var(--color-accent);
+  font-weight: 400;
+}

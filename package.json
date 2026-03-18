@@ -1,0 +1,21 @@
+{
+  "name": "kanaftchian-astro",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Kanaftchian.com — Site ultra premium photographe Bruxelles (Astro + Tailwind)",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.x",
+    "@astrojs/tailwind": "^6.x",
+    "@astrojs/react": "^4.x",
+    "react": "^19.x",
+    "react-dom": "^19.x",
+    "tailwindcss": "^4.x"
+  }
+}
