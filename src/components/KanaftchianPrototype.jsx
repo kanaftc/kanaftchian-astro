@@ -14,8 +14,10 @@ const IMAGES = {
   // Homepage hero background
   heroBg: `${CDN}/6e16dcb5-0a07-437c-8ee3-57b62a0b55df/photographe-bruxelles-shooting-photo-studio-corporate-evennementiel-mariage-belgique-2026.webp?format=2500w`,
   // Logos
-  logo: img("7b305682-8c58-4429-ac33-a7d6f0452df2/logo-hani-kanaftchian-header-optimized+%282%29.webp", "500w"),
+  logoIcon: img("7b305682-8c58-4429-ac33-a7d6f0452df2/logo-hani-kanaftchian-header-optimized+%282%29.webp", "300w"),
+  logo: img("a1eeb20c-f08c-4c35-b441-47f85e112f84/logo-banner-hani-kanaftchian.png", "500w"),
   logoBanner: img("a1eeb20c-f08c-4c35-b441-47f85e112f84/logo-banner-hani-kanaftchian.png", "1000w"),
+  favicon: img("940294d1-d35c-4b59-9bd2-ad54b8019d02/favicon.ico", "100w"),
   // About
   aboutHero: img("ddc97ff2-1c9e-4cb1-82ca-6eff72b25f7e/hani-kanaftchian-a-propos-hero-1920.webp", "1500w"),
   aboutPortrait: img("6e0abe9b-13d9-4469-8999-2deb71bd73c2/hani-kanaftchian-bruxelles-portrait-professionnel-1280.webp", "1000w"),
@@ -480,19 +482,19 @@ function Nav({ currentSlug, navigate, scrollY }) {
       transition: "all 0.5s cubic-bezier(0.22,1,0.36,1)",
       display: "flex", alignItems: "center", justifyContent: "space-between",
     }}>
-      {/* Logo */}
-      <div onClick={() => navigate("/")} style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 14 }}>
-        <div style={{
-          width: 38, height: 38, borderRadius: "50%",
-          border: `1.5px solid ${C.accent}40`,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          fontFamily: F.display, fontSize: 17, color: C.accent, fontWeight: 500,
-          background: `${C.accent}08`,
-        }}>K</div>
-        <span style={{
-          fontFamily: F.display, fontSize: 18, fontWeight: 400,
-          color: C.text, letterSpacing: 3, textTransform: "uppercase",
-        }}>Kanaftchian</span>
+      {/* Logo — image réelle */}
+      <div onClick={() => navigate("/")} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
+        <img
+          src={IMAGES.logo}
+          alt="Hani Kanaftchian — Photographe Bruxelles"
+          style={{
+            height: scrolled ? 32 : 40,
+            width: "auto",
+            objectFit: "contain",
+            transition: "height 0.5s cubic-bezier(0.22,1,0.36,1)",
+            filter: "brightness(1.15)",
+          }}
+        />
       </div>
 
       {/* Links */}
@@ -569,48 +571,130 @@ function Nav({ currentSlug, navigate, scrollY }) {
 // ════════════════════════════════════════════════════════════════
 
 function Footer({ navigate }) {
+  const FooterLink = ({ label, slug, href }) => (
+    <div
+      onClick={() => href ? window.open(href, "_blank") : navigate(slug)}
+      style={{
+        fontFamily: F.body,
+        fontSize: 13,
+        color: C.textMuted,
+        padding: "5px 0",
+        cursor: "pointer",
+        transition: "color 0.3s",
+      }}
+      onMouseEnter={(e) => e.target.style.color = C.text}
+      onMouseLeave={(e) => e.target.style.color = C.textMuted}
+    >
+      {label}
+    </div>
+  );
+
   return (
     <footer style={{ padding: "80px 40px 32px", background: C.bg, borderTop: `1px solid ${C.border}` }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 48 }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr", gap: 48 }}>
+        {/* Brand & Tagline */}
         <div>
-          <div style={{ fontFamily: F.display, fontSize: 22, color: C.text, letterSpacing: 3, marginBottom: 16 }}>KANAFTCHIAN</div>
+          <img
+            src={IMAGES.logo}
+            alt="Kanaftchian"
+            style={{ height: 40, width: "auto", marginBottom: 16, objectFit: "contain" }}
+          />
           <p style={{ fontFamily: F.body, fontSize: 14, color: C.textDim, lineHeight: 1.7, maxWidth: 280 }}>
             Photographe professionnel à Bruxelles.<br />{SITE.tagline}
           </p>
         </div>
+
+        {/* Main Navigation */}
         <div>
           <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>Navigation</div>
-          {["Portfolio", "Tarifs", "Studio", "Contact"].map((l) => (
-            <div key={l} onClick={() => navigate(l === "Portfolio" ? "/photos" : l === "Tarifs" ? "/tarifs-photographe" : l === "Studio" ? "/studio-photo-bruxelles" : "/contact")}
-              style={{ fontFamily: F.body, fontSize: 13, color: C.textMuted, padding: "5px 0", cursor: "pointer", transition: "color 0.3s" }}
-              onMouseEnter={(e) => e.target.style.color = C.text}
-              onMouseLeave={(e) => e.target.style.color = C.textMuted}
-            >{l}</div>
-          ))}
+          <FooterLink label="Accueil" slug="/" />
+          <FooterLink label="Portfolio" slug="/photos" />
+          <FooterLink label="Tarifs" slug="/tarifs-photographe" />
+          <FooterLink label="Studio" slug="/studio-photo-bruxelles" />
+          <FooterLink label="Références" slug="/avis-clients-google" />
+          <FooterLink label="À Propos" slug="/a-propos" />
+          <FooterLink label="Contact" slug="/contact" />
+          <FooterLink label="Réserver" slug="/reservation-shooting-photo" />
         </div>
+
+        {/* Portfolio Services */}
         <div>
-          <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>Services</div>
-          {["Portrait", "Mariage", "Corporate", "Immobilier", "Grossesse"].map((s) => (
-            <div key={s} style={{ fontFamily: F.body, fontSize: 13, color: C.textMuted, padding: "5px 0" }}>{s}</div>
-          ))}
+          <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>Portfolio</div>
+          <FooterLink label="Portrait" slug="/portrait" />
+          <FooterLink label="Mariage" slug="/mariage" />
+          <FooterLink label="Studio" slug="/studio" />
+          <FooterLink label="Grossesse" slug="/grossesse" />
+          <FooterLink label="Paysages" slug="/paysages" />
+          <FooterLink label="Vidéos" slug="/videaste-bruxelles" />
         </div>
+
+        {/* Social Media */}
+        <div>
+          <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>Réseaux</div>
+          <FooterLink label="Instagram" href="https://www.instagram.com/kanaftchian/" />
+          <FooterLink label="Facebook" href="https://www.facebook.com/kanaftchian" />
+          <FooterLink label="YouTube" href="https://www.youtube.com/@HaniKanaftchian" />
+        </div>
+
+        {/* Contact */}
         <div>
           <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>Contact</div>
-          <div style={{ fontFamily: F.body, fontSize: 13, color: C.textMuted, lineHeight: 2 }}>
-            <div>{SITE.phone}</div>
-            <div>{SITE.email}</div>
-            <div style={{ marginTop: 8, lineHeight: 1.5 }}>{SITE.address}</div>
-            <div style={{ marginTop: 4 }}>{SITE.hours}</div>
+          <div
+            onClick={() => window.location.href = `tel:${SITE.phone.replace(/\s/g, "")}`}
+            style={{
+              fontFamily: F.body,
+              fontSize: 13,
+              color: C.textMuted,
+              padding: "5px 0",
+              cursor: "pointer",
+              transition: "color 0.3s",
+            }}
+            onMouseEnter={(e) => e.target.style.color = C.text}
+            onMouseLeave={(e) => e.target.style.color = C.textMuted}
+          >
+            {SITE.phone}
+          </div>
+          <div
+            onClick={() => window.location.href = `mailto:${SITE.email}`}
+            style={{
+              fontFamily: F.body,
+              fontSize: 13,
+              color: C.textMuted,
+              padding: "5px 0",
+              cursor: "pointer",
+              transition: "color 0.3s",
+            }}
+            onMouseEnter={(e) => e.target.style.color = C.text}
+            onMouseLeave={(e) => e.target.style.color = C.textMuted}
+          >
+            {SITE.email}
+          </div>
+          <div style={{ marginTop: 8, lineHeight: 1.5, fontFamily: F.body, fontSize: 13, color: C.textMuted }}>
+            {SITE.address}
+          </div>
+          <div style={{ marginTop: 4, fontFamily: F.body, fontSize: 13, color: C.textMuted }}>
+            {SITE.hours}
           </div>
         </div>
       </div>
+
       <div style={{
         marginTop: 48, paddingTop: 20, borderTop: `1px solid ${C.border}`,
         display: "flex", justifyContent: "space-between",
         fontFamily: F.body, fontSize: 11, color: C.textDim,
       }}>
         <span>© 2026 Hani Kanaftchian Photography. Tous droits réservés.</span>
-        <span>Orchestré par <span style={{ color: C.accent }}>KANEXIO</span></span>
+        <span>
+          Orchestré par{" "}
+          <span
+            onClick={() => window.open("https://weblevel.pro", "_blank")}
+            style={{ color: C.accent, cursor: "pointer", transition: "color 0.3s" }}
+            onMouseEnter={(e) => e.target.style.color = C.text}
+            onMouseLeave={(e) => e.target.style.color = C.accent}
+          >
+            KANEXIO
+          </span>
+        </span>
       </div>
     </footer>
   );
@@ -1200,17 +1284,26 @@ function ReferencesPage({ navigate }) {
 
 function ContactPage({ navigate }) {
   const [form, setForm] = useState({ name: "", email: "", phone: "", service: "", message: "" });
+  const [sent, setSent] = useState(false);
 
   const InputField = ({ label, field, type = "text" }) => (
     <div style={{ marginBottom: 20 }}>
       <label style={{ display: "block", fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>{label}</label>
       <input
-        type={type} value={form[field]}
+        type={type}
+        value={form[field]}
         onChange={(e) => setForm({ ...form, [field]: e.target.value })}
         style={{
-          width: "100%", padding: "14px 16px", background: C.bgAlt,
-          border: `1px solid ${C.border}`, borderRadius: 0, color: C.text,
-          fontFamily: F.body, fontSize: 15, outline: "none", boxSizing: "border-box",
+          width: "100%",
+          padding: "14px 16px",
+          background: C.bgAlt,
+          border: `1px solid ${C.border}`,
+          borderRadius: 0,
+          color: C.text,
+          fontFamily: F.body,
+          fontSize: 15,
+          outline: "none",
+          boxSizing: "border-box",
           transition: "border 0.3s",
         }}
         onFocus={(e) => e.target.style.borderColor = C.accent}
@@ -1218,6 +1311,14 @@ function ContactPage({ navigate }) {
       />
     </div>
   );
+
+  const handleSubmit = () => {
+    const subject = `Demande de contact - ${form.service || "Sans prestation"}`;
+    const body = `Nom: ${form.name}\nEmail: ${form.email}\nTéléphone: ${form.phone}\nPrestation: ${form.service}\n\nMessage:\n${form.message}`;
+    window.location.href = `mailto:hani@kanaftchian.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setSent(true);
+    setTimeout(() => setSent(false), 3000);
+  };
 
   return (
     <section style={{ padding: "160px 40px 100px", background: C.bg, minHeight: "100vh" }}>
@@ -1227,55 +1328,158 @@ function ContactPage({ navigate }) {
           <SectionTitle>Parlons de votre <Accent>projet</Accent></SectionTitle>
           <div style={{ width: 50, height: 1, background: C.accent, margin: "36px 0" }} />
 
-          {[
-            { label: "Téléphone", value: SITE.phone },
-            { label: "Email", value: SITE.email },
-            { label: "Studio Bruxelles", value: SITE.address },
-            { label: "Horaires", value: SITE.hours },
-          ].map((item, i) => (
-            <div key={i} style={{ marginBottom: 24 }}>
-              <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 6 }}>{item.label}</div>
-              <div style={{ fontFamily: F.body, fontSize: 16, color: C.text, fontWeight: 300 }}>{item.value}</div>
+          <div style={{ marginBottom: 32 }}>
+            <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 6 }}>Téléphone</div>
+            <div
+              onClick={() => window.location.href = `tel:${SITE.phone.replace(/\s/g, "")}`}
+              style={{
+                fontFamily: F.body,
+                fontSize: 16,
+                color: C.text,
+                fontWeight: 300,
+                cursor: "pointer",
+                transition: "color 0.3s",
+              }}
+              onMouseEnter={(e) => e.target.style.color = C.accent}
+              onMouseLeave={(e) => e.target.style.color = C.text}
+            >
+              {SITE.phone}
             </div>
-          ))}
+          </div>
+
+          <div style={{ marginBottom: 32 }}>
+            <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 6 }}>Email</div>
+            <div
+              onClick={() => window.location.href = "mailto:hani@kanaftchian.com"}
+              style={{
+                fontFamily: F.body,
+                fontSize: 16,
+                color: C.text,
+                fontWeight: 300,
+                cursor: "pointer",
+                transition: "color 0.3s",
+              }}
+              onMouseEnter={(e) => e.target.style.color = C.accent}
+              onMouseLeave={(e) => e.target.style.color = C.text}
+            >
+              hani@kanaftchian.com
+            </div>
+          </div>
+
+          <div style={{ marginBottom: 32 }}>
+            <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 6 }}>Studio Bruxelles</div>
+            <div style={{ fontFamily: F.body, fontSize: 16, color: C.text, fontWeight: 300 }}>
+              {SITE.address}
+            </div>
+          </div>
+
+          <div style={{ marginBottom: 32 }}>
+            <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 6 }}>Horaires</div>
+            <div style={{ fontFamily: F.body, fontSize: 16, color: C.text, fontWeight: 300 }}>
+              {SITE.hours}
+            </div>
+          </div>
+
+          <div style={{ marginTop: 60, marginBottom: 32 }}>
+            <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 20 }}>Localisation</div>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2519.2498885793817!2d4.366157!3d50.8096!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3e0e0e0e0e0e1%3A0x0!2sRue%20Vanderkindere%20524%2C%201180%20Bruxelles!5e0!3m2!1sfr!2sbe!4v1234567890"
+              width="100%"
+              height="300"
+              style={{ border: `1px solid ${C.border}`, filter: "invert(90%) hue-rotate(180deg) brightness(0.9) contrast(0.9)" }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </FadeIn>
 
         <FadeIn delay={0.15}>
           <div style={{ padding: 40, background: C.surface }}>
-            <h3 style={{ fontFamily: F.display, fontSize: 24, fontWeight: 400, color: C.text, margin: "0 0 32px" }}>Demande de contact</h3>
-            <InputField label="Nom complet" field="name" />
-            <InputField label="Email" field="email" type="email" />
-            <InputField label="Téléphone" field="phone" type="tel" />
-            <div style={{ marginBottom: 20 }}>
-              <label style={{ display: "block", fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>Prestation</label>
-              <select
-                value={form.service}
-                onChange={(e) => setForm({ ...form, service: e.target.value })}
-                style={{
-                  width: "100%", padding: "14px 16px", background: C.bgAlt,
-                  border: `1px solid ${C.border}`, color: C.text,
-                  fontFamily: F.body, fontSize: 15, outline: "none", boxSizing: "border-box",
-                }}
-              >
-                <option value="">Sélectionnez...</option>
-                {SERVICES_LIST.map((s) => <option key={s.title} value={s.title}>{s.title}</option>)}
-              </select>
-            </div>
-            <div style={{ marginBottom: 28 }}>
-              <label style={{ display: "block", fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>Message</label>
-              <textarea
-                rows={4} value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
-                style={{
-                  width: "100%", padding: "14px 16px", background: C.bgAlt,
-                  border: `1px solid ${C.border}`, color: C.text, resize: "vertical",
-                  fontFamily: F.body, fontSize: 15, outline: "none", boxSizing: "border-box",
-                }}
-                onFocus={(e) => e.target.style.borderColor = C.accent}
-                onBlur={(e) => e.target.style.borderColor = C.border}
-              />
-            </div>
-            <GoldButton onClick={() => {}} style={{ width: "100%" }}>Envoyer ma demande</GoldButton>
+            {sent ? (
+              <div style={{ textAlign: "center", padding: "60px 20px" }}>
+                <div style={{ fontFamily: F.display, fontSize: 28, color: C.accent, marginBottom: 16 }}>✓</div>
+                <h3 style={{ fontFamily: F.display, fontSize: 24, fontWeight: 400, color: C.text, margin: "0 0 12px" }}>Merci !</h3>
+                <p style={{ fontFamily: F.body, fontSize: 14, color: C.textMuted }}>
+                  Votre message a été envoyé. Je vous répondrai sous 24h.
+                </p>
+              </div>
+            ) : (
+              <>
+                <h3 style={{ fontFamily: F.display, fontSize: 24, fontWeight: 400, color: C.text, margin: "0 0 32px" }}>
+                  Demande de contact
+                </h3>
+                <InputField label="Nom complet" field="name" />
+                <InputField label="Email" field="email" type="email" />
+                <InputField label="Téléphone" field="phone" type="tel" />
+                <div style={{ marginBottom: 20 }}>
+                  <label style={{
+                    display: "block",
+                    fontFamily: F.body,
+                    fontSize: 10,
+                    color: C.accent,
+                    letterSpacing: 2,
+                    textTransform: "uppercase",
+                    marginBottom: 8,
+                  }}>
+                    Prestation
+                  </label>
+                  <select
+                    value={form.service}
+                    onChange={(e) => setForm({ ...form, service: e.target.value })}
+                    style={{
+                      width: "100%",
+                      padding: "14px 16px",
+                      background: C.bgAlt,
+                      border: `1px solid ${C.border}`,
+                      color: C.text,
+                      fontFamily: F.body,
+                      fontSize: 15,
+                      outline: "none",
+                      boxSizing: "border-box",
+                    }}
+                  >
+                    <option value="">Sélectionnez...</option>
+                    {SERVICES_LIST.map((s) => <option key={s.title} value={s.title}>{s.title}</option>)}
+                  </select>
+                </div>
+                <div style={{ marginBottom: 28 }}>
+                  <label style={{
+                    display: "block",
+                    fontFamily: F.body,
+                    fontSize: 10,
+                    color: C.accent,
+                    letterSpacing: 2,
+                    textTransform: "uppercase",
+                    marginBottom: 8,
+                  }}>
+                    Message
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    style={{
+                      width: "100%",
+                      padding: "14px 16px",
+                      background: C.bgAlt,
+                      border: `1px solid ${C.border}`,
+                      color: C.text,
+                      resize: "vertical",
+                      fontFamily: F.body,
+                      fontSize: 15,
+                      outline: "none",
+                      boxSizing: "border-box",
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = C.accent}
+                    onBlur={(e) => e.target.style.borderColor = C.border}
+                  />
+                </div>
+                <GoldButton onClick={handleSubmit} style={{ width: "100%" }}>
+                  Envoyer ma demande
+                </GoldButton>
+              </>
+            )}
           </div>
         </FadeIn>
       </div>
@@ -1288,38 +1492,183 @@ function ContactPage({ navigate }) {
 // ════════════════════════════════════════════════════════════════
 
 function ReservationPage({ navigate }) {
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+
   return (
-    <section style={{ padding: "160px 40px 100px", background: C.bg, minHeight: "100vh", textAlign: "center" }}>
-      <FadeIn>
-        <SectionLabel>Réservation</SectionLabel>
-        <SectionTitle>Réservez votre <Accent>séance photo</Accent></SectionTitle>
-        <p style={{ fontFamily: F.body, fontSize: 16, color: C.textMuted, marginTop: 24, maxWidth: 600, margin: "24px auto", lineHeight: 1.7 }}>
-          Choisissez le type de séance qui vous correspond et réservez directement un créneau. Je vous recontacterai sous 24h pour confirmer les détails.
-        </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, maxWidth: 800, margin: "60px auto" }}>
-          {[
-            { icon: "📸", label: "Portrait", desc: "Solo, couple, famille" },
-            { icon: "💍", label: "Mariage", desc: "Reportage complet" },
-            { icon: "🏢", label: "Corporate", desc: "Entreprise, événement" },
-          ].map((item, i) => (
-            <FadeIn key={i} delay={i * 0.1}>
+    <>
+      <section style={{ padding: "160px 40px 100px", background: C.bg, minHeight: "100vh" }}>
+        <FadeIn>
+          <SectionLabel>Réservation en ligne</SectionLabel>
+          <SectionTitle>Réservez votre <Accent>séance photo</Accent></SectionTitle>
+
+          {/* SimplyBook.me Iframe */}
+          <div style={{ maxWidth: 1200, margin: "60px auto", position: "relative", minHeight: 600 }}>
+            {!iframeLoaded && (
               <div style={{
-                padding: 40, background: C.surface, cursor: "pointer",
-                transition: "all 0.3s", borderBottom: `2px solid transparent`,
-              }}
-                onMouseEnter={(e) => e.currentTarget.style.borderBottomColor = C.accent}
-                onMouseLeave={(e) => e.currentTarget.style.borderBottomColor = "transparent"}
-              >
-                <div style={{ fontSize: 40, marginBottom: 16 }}>{item.icon}</div>
-                <div style={{ fontFamily: F.display, fontSize: 20, color: C.text }}>{item.label}</div>
-                <div style={{ fontFamily: F.body, fontSize: 13, color: C.textMuted, marginTop: 8 }}>{item.desc}</div>
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: 10,
+              }}>
+                <div style={{
+                  width: 50,
+                  height: 50,
+                  border: `3px solid ${C.border}`,
+                  borderTop: `3px solid ${C.accent}`,
+                  borderRadius: "50%",
+                  animation: "spin 1s linear infinite",
+                }} />
+              </div>
+            )}
+            <div style={{
+              background: C.surface,
+              borderRadius: 4,
+              overflow: "hidden",
+              minHeight: 600,
+              display: iframeLoaded ? "block" : "none",
+            }}>
+              <iframe
+                src="https://hanikanaftchian.simplybook.it/v2/#book"
+                style={{
+                  width: "100%",
+                  height: "600px",
+                  border: "none",
+                  display: "block",
+                }}
+                onLoad={() => setIframeLoaded(true)}
+                title="SimplyBook.me - Réservation"
+              />
+            </div>
+          </div>
+
+          {/* Info Cards */}
+          <div style={{
+            maxWidth: 1200,
+            margin: "80px auto 0",
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: 32,
+          }}>
+            <FadeIn delay={0.1}>
+              <div style={{
+                padding: 40,
+                background: C.surface,
+                border: `1px solid ${C.border}`,
+                textAlign: "center",
+              }}>
+                <div style={{
+                  fontFamily: F.display,
+                  fontSize: 28,
+                  color: C.accent,
+                  marginBottom: 12,
+                }}>
+                  📍
+                </div>
+                <h4 style={{
+                  fontFamily: F.display,
+                  fontSize: 16,
+                  color: C.text,
+                  margin: "0 0 12px",
+                }}>
+                  Studio Bruxelles
+                </h4>
+                <p style={{
+                  fontFamily: F.body,
+                  fontSize: 13,
+                  color: C.textMuted,
+                  margin: 0,
+                  lineHeight: 1.6,
+                }}>
+                  {SITE.address}
+                </p>
               </div>
             </FadeIn>
-          ))}
-        </div>
-        <GoldButton onClick={() => navigate("/contact")}>Continuer la réservation</GoldButton>
-      </FadeIn>
-    </section>
+
+            <FadeIn delay={0.2}>
+              <div style={{
+                padding: 40,
+                background: C.surface,
+                border: `1px solid ${C.border}`,
+                textAlign: "center",
+              }}>
+                <div style={{
+                  fontFamily: F.display,
+                  fontSize: 28,
+                  color: C.accent,
+                  marginBottom: 12,
+                }}>
+                  ✓
+                </div>
+                <h4 style={{
+                  fontFamily: F.display,
+                  fontSize: 16,
+                  color: C.text,
+                  margin: "0 0 12px",
+                }}>
+                  Réponse rapide
+                </h4>
+                <p style={{
+                  fontFamily: F.body,
+                  fontSize: 13,
+                  color: C.textMuted,
+                  margin: 0,
+                }}>
+                  Je vous recontacterai sous 24h
+                </p>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.3}>
+              <div
+                onClick={() => window.location.href = `tel:${SITE.phone.replace(/\s/g, "")}`}
+                style={{
+                  padding: 40,
+                  background: C.surface,
+                  border: `1px solid ${C.border}`,
+                  textAlign: "center",
+                  cursor: "pointer",
+                  transition: "all 0.3s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = C.accent;
+                  e.currentTarget.style.background = `${C.accent}10`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = C.border;
+                  e.currentTarget.style.background = C.surface;
+                }}
+              >
+                <div style={{
+                  fontFamily: F.display,
+                  fontSize: 28,
+                  color: C.accent,
+                  marginBottom: 12,
+                }}>
+                  ☎️
+                </div>
+                <h4 style={{
+                  fontFamily: F.display,
+                  fontSize: 16,
+                  color: C.text,
+                  margin: "0 0 12px",
+                }}>
+                  Téléphone
+                </h4>
+                <p style={{
+                  fontFamily: F.body,
+                  fontSize: 13,
+                  color: C.textMuted,
+                  margin: 0,
+                }}>
+                  {SITE.phone}
+                </p>
+              </div>
+            </FadeIn>
+          </div>
+        </FadeIn>
+      </section>
+    </>
   );
 }
 
@@ -1486,6 +1835,7 @@ export default function KanaftchianUltraPremium() {
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
         @keyframes scrollPulse { 0%,100% { opacity:.3; transform:scaleY(1); } 50% { opacity:.8; transform:scaleY(1.4); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
         img { user-select: none; -webkit-user-drag: none; }
       `}</style>
