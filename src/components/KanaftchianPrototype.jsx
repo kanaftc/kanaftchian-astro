@@ -1,33 +1,23 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 // ════════════════════════════════════════════════════════════════
-// KANAFTCHIAN.COM — ULTRA PREMIUM PROTOTYPE v2
-// Multi-page · Cinematic Dark · Real Photos · Exact Slugs
+// KANAFTCHIAN.COM — ULTRA PREMIUM v3
+// Full responsive, particle canvas, premium animations
 // ════════════════════════════════════════════════════════════════
 
-// ─── CDN Helper ─────────────────────────────────────────────
 const CDN = "https://images.squarespace-cdn.com/content/v1/56ae587e60b5e9e25fc8f373";
 const img = (id, fmt = "1000w") => `${CDN}/${id}?format=${fmt}`;
 
-// ─── Image Database (real photos from kanaftchian.com) ──────
 const IMAGES = {
-  // Homepage hero background
   heroBg: `${CDN}/6e16dcb5-0a07-437c-8ee3-57b62a0b55df/photographe-bruxelles-shooting-photo-studio-corporate-evennementiel-mariage-belgique-2026.webp?format=2500w`,
-  // Logos
   logoIcon: img("7b305682-8c58-4429-ac33-a7d6f0452df2/logo-hani-kanaftchian-header-optimized+%282%29.webp", "300w"),
   logo: img("a1eeb20c-f08c-4c35-b441-47f85e112f84/logo-banner-hani-kanaftchian.png", "500w"),
   logoBanner: img("a1eeb20c-f08c-4c35-b441-47f85e112f84/logo-banner-hani-kanaftchian.png", "1000w"),
-  favicon: img("940294d1-d35c-4b59-9bd2-ad54b8019d02/favicon.ico", "100w"),
-  // About
   aboutHero: img("ddc97ff2-1c9e-4cb1-82ca-6eff72b25f7e/hani-kanaftchian-a-propos-hero-1920.webp", "1500w"),
   aboutPortrait: img("6e0abe9b-13d9-4469-8999-2deb71bd73c2/hani-kanaftchian-bruxelles-portrait-professionnel-1280.webp", "1000w"),
-  haniDetoured: img("57aa1bf5-a2f2-4955-b02e-ce1bd0eb35eb/portrait-photographe-bruxelles-hani-kanaftchian-de%CC%81toure%CC%81-2.png", "500w"),
-  // Clients/Partners
   partners: img("d0072901-7c9d-4114-82e6-e9c6123904e5/partenaires-clients-photographe-professionnel-bruxelles_resultat-72.webp", "1440w"),
-  // Studio
   studioMain: img("fb5bc9fb-2157-45db-8e18-c4844cda3da7/location-studio-light-corporate-brussels-leuven-belgium.jpg", "1500w"),
   studio: Array.from({length: 8}, (_, i) => img(`${["1629311461569-VBSXLENFDFQNT596PGOT/Hani+Kanaftchian+1.jpg","1629311461543-QW9HXZJUW686GX7APASQ/Hani+Kanaftchian+2.jpg","1629311463306-UUFUUGRAJ3HSGDRKB4R8/Hani+Kanaftchian+3.jpg","1629311463542-DZC9CKA0CMNEZ51X8LJB/Hani+Kanaftchian+4.jpg","1629311464988-L90589RQPYM7HIOFUV3E/Hani+Kanaftchian+5.jpg","1629311465356-0WF0MJZ29HZBYG7NZUCE/Hani+Kanaftchian+6.jpg","1629311466505-S2YXWN13PG2XC2HF6XWI/Hani+Kanaftchian+7.jpg","1629311467131-45Z328SI84SUB9CYE8NW/Hani+Kanaftchian+8.jpg"][i]}`, "800w")),
-  // Portrait photos (selection)
   portrait: [
     img("0770f784-3001-4b2e-85e7-a40ba26bceb5/Hani+Kanaftchian+4.jpg", "800w"),
     img("2a616c6c-7069-4cc7-92dd-5b736f9f7617/Hani+Kanaftchian+5.jpg", "800w"),
@@ -50,7 +40,6 @@ const IMAGES = {
     img("1518440196590-IN2ZW4GSDE10MX0OH0WJ/rim-k-enfant-soldat.jpg", "800w"),
     img("1518440171533-6VHM4TT15E1VW175W8KR/seance-photo-homme-bruxelles.jpg", "800w"),
   ],
-  // Mariage photos (selection)
   mariage: [
     img("1462619502475-NM7GFK04K1XT441IN5UU/photographe-mariage-bruxelles.jpg", "1200w"),
     img("1540545287485-3KDQ8XN37RUB29ZOFZ5B/Hani+Kanaftchian+177.jpg", "800w"),
@@ -69,38 +58,6 @@ const IMAGES = {
     img("1518439625358-LOM2DHIGSV6MGZPIV6DZ/mariage-ballade.jpg", "800w"),
     img("1518439584777-RHXDNCX0R78OTOLYTMQV/alliances.jpg", "800w"),
   ],
-  // More portrait page originals
-  portraitPage: [
-    img("1471090440503-GL0NM4YFICQ2QQ6NZMN4/portrait-femme-reflet.jpg", "1200w"),
-    img("1535300105928-F5T5MK48N32JF274Y17M/Tiziana+DG2.jpg", "800w"),
-    img("1535301593411-BHH00YI1ML412A8SPI1V/photoshoot-pro-bruxelles.jpg", "800w"),
-    img("1518440214943-6LGPG5RR2NDUL0TTNR97/shooting-exterieur-naturel.jpg", "800w"),
-    img("1518440181890-3BITZ2L7LP8024TVPNMB/seance-photo-a-la-mer.jpg", "800w"),
-    img("1518440184015-K7M5HPYI2PMNOBL38BUS/couple-photo.jpg", "800w"),
-    img("1518440209663-Y183E3AEMV8INB3ATHZY/shooting-fashion-girl-and-the-city-2.jpg", "800w"),
-    img("1518440218712-TS7VQM2A0FS4SM3ZAJZU/seance-photo-de-famille.jpg", "800w"),
-    img("1518440192328-6CD7AXDXEB6PO9YM0Q1G/photo-shoot-brussels.jpg", "800w"),
-    img("1518440181630-2N7KPNXLT5TAMUKWXJV3/seance-photo-portrait-femme.jpg", "800w"),
-    img("1518440179502-8CLXC8QU0622TUBKESEC/femme-sexy.jpg", "800w"),
-    img("1518440200295-A9QOV0PHMQDJK3HRALK0/portrait-reflection.jpg", "800w"),
-    img("1518440194658-G5E65AHV71C6KRNFAEUC/shooting-photo-modele.jpg", "800w"),
-    img("1518440159812-QE6CUCOY0UEHM6CI8LP2/street-photography.jpg", "800w"),
-    img("1518440162723-KPFFZP72JN1GKPNRCIQR/model-homme-coucher-de-soleil.jpg", "800w"),
-    img("1518440165571-128QUC9WH4HPX8DNNLEN/male-model.jpg", "800w"),
-    img("1518440166493-P0HGXSMWI7QJWBP2TK4E/model-homme.jpg", "800w"),
-    img("1518440168751-HC1D6KOQSWG8VZXTENJY/seance-photo-saut.jpg", "800w"),
-    img("1518440171006-A7UZ402EHEXGKWKLYPDB/portrait-enfant.jpg", "800w"),
-    img("1518440174943-GCG6M2A85TYD6CNEEY66/portrait-femme-beaute.jpg", "800w"),
-    img("1518440186140-QQP94L59DGPQHO1AXK87/homme-africain.jpg", "800w"),
-    img("1518440189902-QN2FIZ46UNEMUTS5YN1X/noir-et-blanc-portrait.jpg", "800w"),
-    img("1518440196453-FICJU1HOQ27SF4POQVDJ/photo-portrait.jpg", "800w"),
-    img("1518440202073-KSBKSNU60EYQD147JLKA/seance-photo-enfant-naturel-3.jpg", "800w"),
-    img("1518440205412-I1B9K7LUFNPWRJ0X2AK9/photo-de-couple-bois.jpg", "800w"),
-    img("1518440210970-RBG7OW1RZVJFY6VLBQ8I/seance-photo-couple.jpg", "800w"),
-    img("1518440213026-L479EZZNZEJSDLJA6O6H/shooting-fashion-girl-and-the-city.jpg", "800w"),
-    img("1518440219521-Z67EB59ZEUSJNJ66UMY7/seance-photo-famille.jpg", "800w"),
-  ],
-  // Grossesse (18 photos)
   grossesse: [
     img("1535300836500-27IOQSAH3HVBVI0T3KND/grossesse-focus-ventre.jpg", "800w"),
     img("1518439972032-ZA0GVW7I5XMA4JD14X6G/seance-photo-naissance.jpg", "800w"),
@@ -121,7 +78,6 @@ const IMAGES = {
     img("1491399749030-HBB026KQZO1E7TV1H9NM/shooting-grossesse-couple-2.jpg", "800w"),
     img("1491399750271-43S926OX0HQRJ1VFND4F/seance-photo-couple-grossesse-2.jpg", "800w"),
   ],
-  // Paysages (54 photos — sélection de 24)
   paysages: [
     img("1fb8e1ae-b160-4112-a195-ca1528a42b14/Night-Skyline-2-imgg-gi3-fcrs8s6s.png", "1200w"),
     img("1518440027913-QMCBWHSLUYGZFQDEPLV7/tour-de-refroidissement-de-charleroi.jpg", "800w"),
@@ -148,7 +104,6 @@ const IMAGES = {
     img("1491399520558-FNPNXVJTE7096DJVU1T3/atomium-brussels.jpg", "800w"),
     img("1491399522636-7ONO2DWTNLPWAXPN8X42/grand-place-tapis-de-fleur.jpg", "800w"),
   ],
-  // Studio portfolio (85 photos — sélection de 20)
   studioPortfolio: [
     img("1737837479707-MV34G0RKBDMYOLDHJKIM/seance-photo-studio-bruxelles.jpg", "1200w"),
     img("1548543591212-K4LLMZO7NYYZ4CERXKC9/Hani+Kanaftchian+1.jpg", "800w"),
@@ -171,7 +126,6 @@ const IMAGES = {
     img("1518439777636-8GWM50H8KA20GUPQRMI8/miss-bruxeles-elisabeth.jpg", "800w"),
     img("1518439790177-IRKZAJRWSLCAL4MJYHB1/shooting-studio-portrait-corporate-business.jpg", "800w"),
   ],
-  // Vidéos (Vimeo embeds)
   videos: [
     "https://player.vimeo.com/video/345748295?h=93094b7741",
     "https://player.vimeo.com/video/585373992?h=d1e6663da1",
@@ -180,7 +134,6 @@ const IMAGES = {
   ],
 };
 
-// ─── Site Config ────────────────────────────────────────────
 const SITE = {
   name: "Kanaftchian",
   tagline: "Ce qui se vit avant ce qui se voit.",
@@ -190,7 +143,6 @@ const SITE = {
   hours: "Lun–Sam : 9h–18h",
 };
 
-// ─── Design Tokens ──────────────────────────────────────────
 const C = {
   bg: "#050507", bgAlt: "#0A0A0F", surface: "#111116", surfaceHover: "#18181F",
   border: "#1A1A24", borderLight: "#2A2A38",
@@ -198,41 +150,27 @@ const C = {
   accent: "#C8A87C", accentLight: "#E0C9A0", accentDim: "#8B7355",
   white: "#FFFFFF",
 };
+
 const F = {
   display: "'Playfair Display', Georgia, serif",
   body: "'Inter', -apple-system, sans-serif",
 };
 
-// ─── Routes matching kanaftchian.com exactly ────────────────
 const ROUTES = {
-  "/": "home",
-  "/portrait": "portrait",
-  "/mariage": "mariage",
-  "/grossesse": "grossesse",
-  "/studio": "studioPortfolio",
-  "/paysages": "paysages",
-  "/videaste-bruxelles": "video",
-  "/tarifs-photographe": "tarifs",
-  "/studio-photo-bruxelles": "studioPage",
-  "/avis-clients-google": "references",
-  "/a-propos": "about",
-  "/contact": "contact",
-  "/reservation-shooting-photo": "reservation",
-  "/photos": "photos",
+  "/": "home", "/portrait": "portrait", "/mariage": "mariage", "/grossesse": "grossesse",
+  "/studio": "studioPortfolio", "/paysages": "paysages", "/videaste-bruxelles": "video",
+  "/tarifs-photographe": "tarifs", "/studio-photo-bruxelles": "studioPage",
+  "/avis-clients-google": "references", "/a-propos": "about", "/contact": "contact",
+  "/reservation-shooting-photo": "reservation", "/photos": "photos",
 };
 
 const MENU = [
   { label: "Accueil", slug: "/" },
-  {
-    label: "Portfolio", slug: "/photos", children: [
-      { label: "Portrait", slug: "/portrait" },
-      { label: "Studio", slug: "/studio" },
-      { label: "Mariage", slug: "/mariage" },
-      { label: "Grossesse", slug: "/grossesse" },
-      { label: "Paysages", slug: "/paysages" },
-      { label: "Vidéos", slug: "/videaste-bruxelles" },
-    ]
-  },
+  { label: "Portfolio", slug: "/photos", children: [
+    { label: "Portrait", slug: "/portrait" }, { label: "Studio", slug: "/studio" },
+    { label: "Mariage", slug: "/mariage" }, { label: "Grossesse", slug: "/grossesse" },
+    { label: "Paysages", slug: "/paysages" }, { label: "Vidéos", slug: "/videaste-bruxelles" },
+  ]},
   { label: "Tarifs", slug: "/tarifs-photographe" },
   { label: "Studio", slug: "/studio-photo-bruxelles" },
   { label: "Références", slug: "/avis-clients-google" },
@@ -268,6 +206,16 @@ const TESTIMONIALS = [
 // HOOKS
 // ════════════════════════════════════════════════════════════════
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  useEffect(() => {
+    const h = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", h);
+    return () => window.removeEventListener("resize", h);
+  }, []);
+  return isMobile;
+}
+
 function useScrollY() {
   const [y, setY] = useState(0);
   useEffect(() => {
@@ -292,6 +240,53 @@ function useInView(threshold = 0.15) {
 }
 
 // ════════════════════════════════════════════════════════════════
+// PARTICLE CANVAS
+// ════════════════════════════════════════════════════════════════
+
+function ParticleCanvas() {
+  const canvasRef = useRef(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = Array.from({ length: 50 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 2 + 1,
+      speed: Math.random() * 0.5 + 0.1,
+      opacity: Math.random() * 0.25 + 0.15,
+    }));
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
+        ctx.fillStyle = `rgba(200, 168, 124, ${p.opacity})`;
+        ctx.fillRect(p.x, p.y, p.size, p.size);
+        p.y -= p.speed;
+        if (p.y < 0) p.y = canvas.height;
+        p.opacity *= 0.99;
+        if (p.opacity < 0.05) p.opacity = Math.random() * 0.25 + 0.15;
+      });
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, []);
+
+  return <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, zIndex: 0 }} />;
+}
+
+// ════════════════════════════════════════════════════════════════
 // MICRO COMPONENTS
 // ════════════════════════════════════════════════════════════════
 
@@ -308,21 +303,11 @@ function FadeIn({ children, delay = 0, y = 40, style = {} }) {
 }
 
 function SectionLabel({ children }) {
-  return (
-    <div style={{
-      fontFamily: F.body, fontSize: 11, letterSpacing: 5,
-      textTransform: "uppercase", color: C.accent, marginBottom: 20, fontWeight: 500,
-    }}>{children}</div>
-  );
+  return <div style={{ fontFamily: F.body, fontSize: 11, letterSpacing: 5, textTransform: "uppercase", color: C.accent, marginBottom: 20, fontWeight: 500 }}>{children}</div>;
 }
 
 function SectionTitle({ children, style = {} }) {
-  return (
-    <h2 style={{
-      fontFamily: F.display, fontSize: "clamp(32px, 4.5vw, 56px)",
-      fontWeight: 300, color: C.text, lineHeight: 1.15, margin: 0, ...style,
-    }}>{children}</h2>
-  );
+  return <h2 style={{ fontFamily: F.display, fontSize: "clamp(32px, 4.5vw, 56px)", fontWeight: 300, color: C.text, lineHeight: 1.15, margin: 0, ...style }}>{children}</h2>;
 }
 
 function Accent({ children }) {
@@ -331,12 +316,25 @@ function Accent({ children }) {
 
 function GoldButton({ children, onClick, variant = "filled", style = {} }) {
   const [hov, setHov] = useState(false);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const ref = useRef(null);
   const filled = variant === "filled";
+
+  const handleMouseMove = (e) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setPos({ x, y });
+  };
+
   return (
     <button
+      ref={ref}
       onClick={onClick}
       onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
+      onMouseLeave={() => { setHov(false); }}
+      onMouseMove={handleMouseMove}
       style={{
         padding: "16px 40px",
         background: filled ? (hov ? C.accentLight : C.accent) : (hov ? C.accent : "transparent"),
@@ -345,6 +343,7 @@ function GoldButton({ children, onClick, variant = "filled", style = {} }) {
         fontFamily: F.body, fontSize: 11, letterSpacing: 3, textTransform: "uppercase",
         color: (filled || hov) ? C.bg : C.textMuted,
         fontWeight: 600, transition: "all 0.4s cubic-bezier(0.22,1,0.36,1)",
+        position: "relative",
         ...style,
       }}
     >{children}</button>
@@ -374,28 +373,10 @@ function PhotoCard({ src, alt = "", aspect = "3/4", onClick }) {
           transition: "transform 0.8s cubic-bezier(0.22,1,0.36,1), opacity 0.6s ease",
         }}
       />
-      {/* Shimmer placeholder */}
-      {!loaded && (
-        <div style={{
-          position: "absolute", inset: 0,
-          background: `linear-gradient(110deg, ${C.surface} 30%, ${C.surfaceHover} 50%, ${C.surface} 70%)`,
-          backgroundSize: "200% 100%",
-          animation: "shimmer 1.5s infinite",
-        }} />
-      )}
+      {!loaded && <div style={{ position: "absolute", inset: 0, background: `linear-gradient(110deg, ${C.surface} 30%, ${C.surfaceHover} 50%, ${C.surface} 70%)`, backgroundSize: "200% 100%", animation: "shimmer 1.5s infinite" }} />}
       {hov && onClick && (
-        <div style={{
-          position: "absolute", inset: 0,
-          background: `${C.bg}60`,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          transition: "opacity 0.3s",
-        }}>
-          <div style={{
-            width: 50, height: 50, borderRadius: "50%",
-            border: `1.5px solid ${C.accent}`,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            color: C.accent, fontSize: 20,
-          }}>+</div>
+        <div style={{ position: "absolute", inset: 0, background: `${C.bg}60`, display: "flex", alignItems: "center", justifyContent: "center", transition: "opacity 0.3s" }}>
+          <div style={{ width: 50, height: 50, borderRadius: "50%", border: `1.5px solid ${C.accent}`, display: "flex", alignItems: "center", justifyContent: "center", color: C.accent, fontSize: 20 }}>+</div>
         </div>
       )}
     </div>
@@ -420,46 +401,13 @@ function Lightbox({ images, index, onClose, onNav }) {
   if (index < 0) return null;
 
   return (
-    <div onClick={onClose} style={{
-      position: "fixed", inset: 0, zIndex: 10000,
-      background: `${C.bg}F5`, backdropFilter: "blur(30px)",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      animation: "fadeIn 0.3s ease",
-    }}>
-      <img
-        src={images[index]} alt=""
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          maxWidth: "85vw", maxHeight: "85vh", objectFit: "contain",
-          boxShadow: "0 40px 100px rgba(0,0,0,0.6)",
-        }}
-      />
-      {/* Nav arrows */}
+    <div onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 10000, background: `${C.bg}F5`, backdropFilter: "blur(30px)", display: "flex", alignItems: "center", justifyContent: "center", animation: "fadeIn 0.3s ease" }}>
+      <img src={images[index]} alt="" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "85vw", maxHeight: "85vh", objectFit: "contain", boxShadow: "0 40px 100px rgba(0,0,0,0.6)" }} />
       {[[-1, "←", "left: 20px"], [1, "→", "right: 20px"]].map(([dir, arrow, pos]) => (
-        <button
-          key={dir}
-          onClick={(e) => { e.stopPropagation(); onNav(dir); }}
-          style={{
-            position: "absolute", top: "50%", transform: "translateY(-50%)",
-            [pos.split(":")[0]]: pos.split(":")[1],
-            background: `${C.surface}CC`, border: `1px solid ${C.border}`,
-            width: 50, height: 50, borderRadius: "50%",
-            color: C.text, fontSize: 18, cursor: "pointer",
-            display: "flex", alignItems: "center", justifyContent: "center",
-          }}
-        >{arrow}</button>
+        <button key={dir} onClick={(e) => { e.stopPropagation(); onNav(dir); }} style={{ position: "absolute", top: "50%", transform: "translateY(-50%)", [pos.split(":")[0]]: pos.split(":")[1], background: `${C.surface}CC`, border: `1px solid ${C.border}`, width: 50, height: 50, borderRadius: "50%", color: C.text, fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>{arrow}</button>
       ))}
-      {/* Counter */}
-      <div style={{
-        position: "absolute", bottom: 30, left: "50%", transform: "translateX(-50%)",
-        fontFamily: F.body, fontSize: 13, color: C.textMuted, letterSpacing: 2,
-      }}>{index + 1} / {images.length}</div>
-      {/* Close */}
-      <button onClick={onClose} style={{
-        position: "absolute", top: 24, right: 24,
-        background: "none", border: "none", color: C.text,
-        fontSize: 28, cursor: "pointer", fontWeight: 300,
-      }}>✕</button>
+      <div style={{ position: "absolute", bottom: 30, left: "50%", transform: "translateX(-50%)", fontFamily: F.body, fontSize: 13, color: C.textMuted, letterSpacing: 2 }}>{index + 1} / {images.length}</div>
+      <button onClick={onClose} style={{ position: "absolute", top: 24, right: 24, background: "none", border: "none", color: C.text, fontSize: 28, cursor: "pointer", fontWeight: 300 }}>✕</button>
     </div>
   );
 }
@@ -468,100 +416,73 @@ function Lightbox({ images, index, onClose, onNav }) {
 // NAVIGATION
 // ════════════════════════════════════════════════════════════════
 
-function Nav({ currentSlug, navigate, scrollY }) {
+function Nav({ currentSlug, navigate, scrollY, isMobile }) {
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const scrolled = scrollY > 60;
 
   return (
     <nav style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 5000,
-      padding: scrolled ? "10px 40px" : "20px 40px",
+      padding: scrolled ? "10px 20px" : "20px 20px",
       background: scrolled ? `${C.bg}F0` : "transparent",
-      backdropFilter: scrolled ? "blur(24px) saturate(1.2)" : "none",
+      backdropFilter: scrolled ? "blur(24px)" : "none",
       borderBottom: scrolled ? `1px solid ${C.border}` : "1px solid transparent",
       transition: "all 0.5s cubic-bezier(0.22,1,0.36,1)",
       display: "flex", alignItems: "center", justifyContent: "space-between",
     }}>
-      {/* Logo — image réelle */}
       <div onClick={() => navigate("/")} style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
-        <img
-          src={IMAGES.logo}
-          alt="Hani Kanaftchian — Photographe Bruxelles"
-          style={{
-            height: scrolled ? 44 : 58,
-            width: "auto",
-            objectFit: "contain",
-            transition: "height 0.5s cubic-bezier(0.22,1,0.36,1)",
-            filter: "brightness(1.15)",
-          }}
-        />
+        <img src={IMAGES.logo} alt="Kanaftchian" style={{ height: scrolled ? 44 : 58, width: "auto", objectFit: "contain", transition: "height 0.5s", filter: "brightness(1.15)" }} />
       </div>
 
-      {/* Links */}
-      <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
-        {MENU.map((item) => (
-          <div
-            key={item.slug}
-            style={{ position: "relative" }}
-            onMouseEnter={() => item.children && setOpenDropdown(item.slug)}
-            onMouseLeave={() => setOpenDropdown(null)}
-          >
-            <button
-              onClick={() => navigate(item.slug)}
-              style={{
-                background: "none", border: "none", cursor: "pointer",
-                padding: "10px 14px",
-                fontFamily: F.body, fontSize: 11, fontWeight: 500,
-                letterSpacing: 2, textTransform: "uppercase",
-                color: currentSlug === item.slug ? C.accent : C.textMuted,
-                transition: "color 0.3s",
-                position: "relative",
-              }}
-              onMouseEnter={(e) => e.target.style.color = C.accent}
-              onMouseLeave={(e) => { if (currentSlug !== item.slug) e.target.style.color = C.textMuted; }}
-            >
-              {item.label}
-              {currentSlug === item.slug && (
-                <span style={{
-                  position: "absolute", bottom: 4, left: "50%",
-                  transform: "translateX(-50%)", width: 16, height: 1.5,
-                  background: C.accent,
-                }} />
+      {isMobile ? (
+        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ background: "none", border: "none", color: C.text, fontSize: 24, cursor: "pointer" }}>☰</button>
+      ) : (
+        <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
+          {MENU.map((item) => (
+            <div key={item.slug} style={{ position: "relative" }} onMouseEnter={() => item.children && setOpenDropdown(item.slug)} onMouseLeave={() => setOpenDropdown(null)}>
+              <button onClick={() => navigate(item.slug)} style={{ background: "none", border: "none", cursor: "pointer", padding: "10px 14px", fontFamily: F.body, fontSize: 11, fontWeight: 500, letterSpacing: 2, textTransform: "uppercase", color: currentSlug === item.slug ? C.accent : C.textMuted, transition: "color 0.3s" }} onMouseEnter={(e) => e.target.style.color = C.accent} onMouseLeave={(e) => { if (currentSlug !== item.slug) e.target.style.color = C.textMuted; }}>
+                {item.label}
+                {currentSlug === item.slug && <span style={{ position: "absolute", bottom: 4, left: "50%", transform: "translateX(-50%)", width: 16, height: 1.5, background: C.accent }} />}
+              </button>
+              {item.children && openDropdown === item.slug && (
+                <div style={{ position: "absolute", top: "100%", left: 0, background: C.surface, border: `1px solid ${C.border}`, padding: "8px 0", minWidth: 180, animation: "slideDown 0.2s ease", boxShadow: "0 20px 60px rgba(0,0,0,0.5)" }}>
+                  {item.children.map((child) => (
+                    <button key={child.slug} onClick={() => { navigate(child.slug); setOpenDropdown(null); }} style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 20px", background: "none", border: "none", fontFamily: F.body, fontSize: 12, color: C.textMuted, cursor: "pointer", letterSpacing: 1, transition: "all 0.2s" }} onMouseEnter={(e) => { e.target.style.color = C.accent; e.target.style.paddingLeft = "24px"; }} onMouseLeave={(e) => { e.target.style.color = C.textMuted; e.target.style.paddingLeft = "20px"; }}>
+                      {child.label}
+                    </button>
+                  ))}
+                </div>
               )}
-            </button>
+            </div>
+          ))}
+          <GoldButton onClick={() => navigate("/reservation-shooting-photo")} style={{ marginLeft: 16, padding: "10px 24px", fontSize: 10 }}>Réserver</GoldButton>
+        </div>
+      )}
 
-            {/* Dropdown */}
-            {item.children && openDropdown === item.slug && (
-              <div style={{
-                position: "absolute", top: "100%", left: 0,
-                background: C.surface, border: `1px solid ${C.border}`,
-                padding: "8px 0", minWidth: 180,
-                animation: "slideDown 0.2s ease",
-                boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
-              }}>
-                {item.children.map((child) => (
-                  <button
-                    key={child.slug}
-                    onClick={() => { navigate(child.slug); setOpenDropdown(null); }}
-                    style={{
-                      display: "block", width: "100%", textAlign: "left",
-                      padding: "10px 20px", background: "none", border: "none",
-                      fontFamily: F.body, fontSize: 12, color: C.textMuted,
-                      cursor: "pointer", letterSpacing: 1, transition: "all 0.2s",
-                    }}
-                    onMouseEnter={(e) => { e.target.style.color = C.accent; e.target.style.paddingLeft = "24px"; }}
-                    onMouseLeave={(e) => { e.target.style.color = C.textMuted; e.target.style.paddingLeft = "20px"; }}
-                  >{child.label}</button>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-
-        <GoldButton onClick={() => navigate("/reservation-shooting-photo")} style={{ marginLeft: 16, padding: "10px 24px", fontSize: 10 }}>
-          Réserver
-        </GoldButton>
-      </div>
+      {isMobile && mobileMenuOpen && (
+        <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: C.surface, borderBottom: `1px solid ${C.border}`, padding: "20px", maxHeight: "80vh", overflowY: "auto" }}>
+          {MENU.map((item) => (
+            <div key={item.slug}>
+              <button onClick={() => { navigate(item.slug); setMobileMenuOpen(false); }} style={{ display: "block", width: "100%", textAlign: "left", padding: "12px 0", background: "none", border: "none", fontFamily: F.body, fontSize: 14, color: C.text, cursor: "pointer", fontWeight: 500 }}>
+                {item.label}
+              </button>
+              {item.children && (
+                <div style={{ paddingLeft: 20, marginTop: 8 }}>
+                  {item.children.map((child) => (
+                    <button key={child.slug} onClick={() => { navigate(child.slug); setMobileMenuOpen(false); }} style={{ display: "block", width: "100%", textAlign: "left", padding: "8px 0", background: "none", border: "none", fontFamily: F.body, fontSize: 12, color: C.textMuted, cursor: "pointer" }}>
+                      {child.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+          <button onClick={() => { navigate("/reservation-shooting-photo"); setMobileMenuOpen(false); }} style={{ display: "block", width: "100%", marginTop: 16, padding: "12px 0", background: "none", border: "none", fontFamily: F.body, fontSize: 14, color: C.accent, cursor: "pointer", fontWeight: 600 }}>
+            Réserver
+          </button>
+        </div>
+      )}
     </nav>
   );
 }
@@ -570,54 +491,31 @@ function Nav({ currentSlug, navigate, scrollY }) {
 // FOOTER
 // ════════════════════════════════════════════════════════════════
 
-function Footer({ navigate }) {
+function Footer({ navigate, isMobile }) {
   const FooterLink = ({ label, slug, href }) => (
-    <div
-      onClick={() => href ? window.open(href, "_blank") : navigate(slug)}
-      style={{
-        fontFamily: F.body,
-        fontSize: 13,
-        color: C.textMuted,
-        padding: "5px 0",
-        cursor: "pointer",
-        transition: "color 0.3s",
-      }}
-      onMouseEnter={(e) => e.target.style.color = C.text}
-      onMouseLeave={(e) => e.target.style.color = C.textMuted}
-    >
+    <div onClick={() => href ? window.open(href, "_blank") : navigate(slug)} style={{ fontFamily: F.body, fontSize: 13, color: C.textMuted, padding: "5px 0", cursor: "pointer", transition: "color 0.3s" }} onMouseEnter={(e) => e.target.style.color = C.text} onMouseLeave={(e) => e.target.style.color = C.textMuted}>
       {label}
     </div>
   );
 
   return (
-    <footer style={{ padding: "80px 40px 32px", background: C.bg, borderTop: `1px solid ${C.border}` }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr", gap: 48 }}>
-        {/* Brand & Tagline */}
+    <footer style={{ padding: isMobile ? "60px 20px 32px" : "80px 40px 32px", background: C.bg, borderTop: `1px solid ${C.border}` }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "2fr 1fr 1fr 1fr 1fr", gap: isMobile ? 32 : 48 }}>
         <div>
-          <img
-            src={IMAGES.logo}
-            alt="Kanaftchian"
-            style={{ height: 50, width: "auto", marginBottom: 16, objectFit: "contain", filter: "brightness(1.15)" }}
-          />
+          <img src={IMAGES.logo} alt="Kanaftchian" style={{ height: 50, width: "auto", marginBottom: 16, objectFit: "contain", filter: "brightness(1.15)" }} />
           <p style={{ fontFamily: F.body, fontSize: 14, color: C.textDim, lineHeight: 1.7, maxWidth: 280 }}>
             Photographe professionnel à Bruxelles.<br />{SITE.tagline}
           </p>
         </div>
-
-        {/* Main Navigation */}
         <div>
           <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>Navigation</div>
           <FooterLink label="Accueil" slug="/" />
           <FooterLink label="Portfolio" slug="/photos" />
           <FooterLink label="Tarifs" slug="/tarifs-photographe" />
           <FooterLink label="Studio" slug="/studio-photo-bruxelles" />
-          <FooterLink label="Références" slug="/avis-clients-google" />
           <FooterLink label="À Propos" slug="/a-propos" />
           <FooterLink label="Contact" slug="/contact" />
-          <FooterLink label="Réserver" slug="/reservation-shooting-photo" />
         </div>
-
-        {/* Portfolio Services */}
         <div>
           <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>Portfolio</div>
           <FooterLink label="Portrait" slug="/portrait" />
@@ -627,71 +525,34 @@ function Footer({ navigate }) {
           <FooterLink label="Paysages" slug="/paysages" />
           <FooterLink label="Vidéos" slug="/videaste-bruxelles" />
         </div>
-
-        {/* Social Media */}
-        <div>
-          <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>Réseaux</div>
-          <FooterLink label="Instagram" href="https://www.instagram.com/kanaftchian/" />
-          <FooterLink label="Facebook" href="https://www.facebook.com/kanaftchian" />
-          <FooterLink label="YouTube" href="https://www.youtube.com/@HaniKanaftchian" />
-        </div>
-
-        {/* Contact */}
-        <div>
-          <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>Contact</div>
-          <div
-            onClick={() => window.location.href = `tel:${SITE.phone.replace(/\s/g, "")}`}
-            style={{
-              fontFamily: F.body,
-              fontSize: 13,
-              color: C.textMuted,
-              padding: "5px 0",
-              cursor: "pointer",
-              transition: "color 0.3s",
-            }}
-            onMouseEnter={(e) => e.target.style.color = C.text}
-            onMouseLeave={(e) => e.target.style.color = C.textMuted}
-          >
-            {SITE.phone}
-          </div>
-          <div
-            onClick={() => window.location.href = `mailto:${SITE.email}`}
-            style={{
-              fontFamily: F.body,
-              fontSize: 13,
-              color: C.textMuted,
-              padding: "5px 0",
-              cursor: "pointer",
-              transition: "color 0.3s",
-            }}
-            onMouseEnter={(e) => e.target.style.color = C.text}
-            onMouseLeave={(e) => e.target.style.color = C.textMuted}
-          >
-            {SITE.email}
-          </div>
-          <div style={{ marginTop: 8, lineHeight: 1.5, fontFamily: F.body, fontSize: 13, color: C.textMuted }}>
-            {SITE.address}
-          </div>
-          <div style={{ marginTop: 4, fontFamily: F.body, fontSize: 13, color: C.textMuted }}>
-            {SITE.hours}
-          </div>
-        </div>
+        {!isMobile && (
+          <>
+            <div>
+              <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>Réseaux</div>
+              <FooterLink label="Instagram" href="https://www.instagram.com/kanaftchian/" />
+              <FooterLink label="Facebook" href="https://www.facebook.com/kanaftchian" />
+              <FooterLink label="YouTube" href="https://www.youtube.com/@HaniKanaftchian" />
+            </div>
+            <div>
+              <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 16 }}>Contact</div>
+              <div onClick={() => window.location.href = `tel:${SITE.phone.replace(/\s/g, "")}`} style={{ fontFamily: F.body, fontSize: 13, color: C.textMuted, padding: "5px 0", cursor: "pointer", transition: "color 0.3s" }} onMouseEnter={(e) => e.target.style.color = C.text} onMouseLeave={(e) => e.target.style.color = C.textMuted}>
+                {SITE.phone}
+              </div>
+              <div onClick={() => window.location.href = `mailto:${SITE.email}`} style={{ fontFamily: F.body, fontSize: 13, color: C.textMuted, padding: "5px 0", cursor: "pointer", transition: "color 0.3s" }} onMouseEnter={(e) => e.target.style.color = C.text} onMouseLeave={(e) => e.target.style.color = C.textMuted}>
+                {SITE.email}
+              </div>
+              <div style={{ marginTop: 8, lineHeight: 1.5, fontFamily: F.body, fontSize: 13, color: C.textMuted }}>
+                {SITE.address}
+              </div>
+            </div>
+          </>
+        )}
       </div>
-
-      <div style={{
-        marginTop: 48, paddingTop: 20, borderTop: `1px solid ${C.border}`,
-        display: "flex", justifyContent: "space-between",
-        fontFamily: F.body, fontSize: 11, color: C.textDim,
-      }}>
+      <div style={{ marginTop: 48, paddingTop: 20, borderTop: `1px solid ${C.border}`, display: "flex", justifyContent: "space-between", fontFamily: F.body, fontSize: 11, color: C.textDim, flexWrap: "wrap" }}>
         <span>© 2026 Hani Kanaftchian Photography. Tous droits réservés.</span>
         <span>
           Orchestré par{" "}
-          <span
-            onClick={() => window.open("https://weblevel.pro", "_blank")}
-            style={{ color: C.accent, cursor: "pointer", transition: "color 0.3s" }}
-            onMouseEnter={(e) => e.target.style.color = C.text}
-            onMouseLeave={(e) => e.target.style.color = C.accent}
-          >
+          <span onClick={() => window.open("https://weblevel.pro", "_blank")} style={{ color: C.accent, cursor: "pointer", transition: "color 0.3s" }} onMouseEnter={(e) => e.target.style.color = C.text} onMouseLeave={(e) => e.target.style.color = C.accent}>
             KANEXIO
           </span>
         </span>
@@ -701,10 +562,10 @@ function Footer({ navigate }) {
 }
 
 // ════════════════════════════════════════════════════════════════
-// PAGE: HOME
+// PAGES
 // ════════════════════════════════════════════════════════════════
 
-function HomePage({ navigate }) {
+function HomePage({ navigate, isMobile }) {
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const scrollY = useScrollY();
@@ -715,92 +576,44 @@ function HomePage({ navigate }) {
     return () => clearInterval(t);
   }, []);
 
+  const padding = isMobile ? "60px 20px" : "100px 40px";
+
   return (
     <>
-      {/* ── HERO ── */}
       <section style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: `url(${IMAGES.heroBg})`,
-          backgroundSize: "cover", backgroundPosition: "center",
-          transform: `scale(${1 + scrollY * 0.0003}) translateY(${scrollY * 0.15}px)`,
-          transition: "transform 0.1s linear",
-        }} />
-        <div style={{
-          position: "absolute", inset: 0,
-          background: `linear-gradient(180deg, ${C.bg}60 0%, ${C.bg}90 50%, ${C.bg}F5 100%)`,
-        }} />
-
-        <div style={{
-          position: "relative", zIndex: 10, height: "100%",
-          display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
-          textAlign: "center", padding: "0 40px",
-          opacity: heroLoaded ? 1 : 0, transform: heroLoaded ? "translateY(0)" : "translateY(50px)",
-          transition: "all 1.4s cubic-bezier(0.22,1,0.36,1) 0.2s",
-        }}>
-          <div style={{
-            fontFamily: F.body, fontSize: 11, letterSpacing: 8,
-            textTransform: "uppercase", color: C.accent, marginBottom: 32,
-          }}>
+        <ParticleCanvas />
+        <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${IMAGES.heroBg})`, backgroundSize: "cover", backgroundPosition: "center", transform: `scale(${1 + scrollY * 0.0003}) translateY(${scrollY * 0.15}px)`, transition: "transform 0.1s linear" }} />
+        <div style={{ position: "absolute", inset: 0, background: `linear-gradient(180deg, ${C.bg}60 0%, ${C.bg}90 50%, ${C.bg}F5 100%)` }} />
+        <div style={{ position: "relative", zIndex: 10, height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "0 20px", opacity: heroLoaded ? 1 : 0, transform: heroLoaded ? "translateY(0)" : "translateY(50px)", transition: "all 1.4s cubic-bezier(0.22,1,0.36,1) 0.2s" }}>
+          <div style={{ fontFamily: F.body, fontSize: 11, letterSpacing: 8, textTransform: "uppercase", color: C.accent, marginBottom: 32 }}>
             📍 Studio Uccle, Bruxelles
           </div>
-
-          {/* H1 SEO — requête principale */}
-          <h1 style={{
-            fontFamily: F.display, fontSize: "clamp(48px, 8vw, 110px)",
-            fontWeight: 300, color: C.white, lineHeight: 1.05, margin: 0,
-            letterSpacing: -2,
-          }}>
+          <h1 style={{ fontFamily: F.display, fontSize: "clamp(48px, 8vw, 110px)", fontWeight: 300, color: C.white, lineHeight: 1.05, margin: 0, letterSpacing: -2 }}>
             Photographe <Accent>Bruxelles</Accent>
           </h1>
-
-          {/* Tagline cinématique — visuellement impactante mais en H2 pour le SEO */}
-          <h2 style={{
-            fontFamily: F.display, fontSize: "clamp(20px, 3vw, 36px)",
-            fontWeight: 300, color: `${C.textMuted}CC`, lineHeight: 1.4, margin: 0,
-            marginTop: 20, fontStyle: "italic", letterSpacing: 1,
-          }}>
+          <h2 style={{ fontFamily: F.display, fontSize: "clamp(20px, 3vw, 36px)", fontWeight: 300, color: `${C.textMuted}CC`, lineHeight: 1.4, margin: 0, marginTop: 20, fontStyle: "italic", letterSpacing: 1 }}>
             Ce qui se vit avant ce qui se voit.
           </h2>
-
-          <p style={{
-            fontFamily: F.body, fontSize: 15, color: C.textMuted,
-            marginTop: 28, maxWidth: 480, lineHeight: 1.8, fontWeight: 300,
-          }}>
-            Portrait · Mariage · Corporate · Évènement<br />
-            Studio photo à Uccle & Heverlee
+          <p style={{ fontFamily: F.body, fontSize: 15, color: C.textMuted, marginTop: 28, maxWidth: 480, lineHeight: 1.8, fontWeight: 300 }}>
+            Portrait · Mariage · Corporate · Évènement<br />Studio photo à Uccle & Heverlee
           </p>
-
-          <div style={{ display: "flex", gap: 16, marginTop: 48 }}>
+          <div style={{ display: "flex", gap: 16, marginTop: 48, flexWrap: "wrap", justifyContent: "center" }}>
             <GoldButton onClick={() => navigate("/reservation-shooting-photo")}>Réserver une séance</GoldButton>
             <GoldButton onClick={() => navigate("/photos")} variant="outline">Découvrir le portfolio ↓</GoldButton>
           </div>
-
-          {/* Rating badge */}
-          <div style={{
-            marginTop: 56, display: "flex", alignItems: "center", gap: 12,
-            padding: "12px 24px", background: `${C.surface}80`, borderRadius: 100,
-            border: `1px solid ${C.border}`,
-          }}>
+          <div style={{ marginTop: 56, display: "flex", alignItems: "center", gap: 12, padding: "12px 24px", background: `${C.surface}80`, borderRadius: 100, border: `1px solid ${C.border}` }}>
             <span style={{ fontFamily: F.display, fontSize: 20, color: C.accent, fontWeight: 500 }}>4.9</span>
             <span style={{ color: "#F5C518", fontSize: 14 }}>★★★★★</span>
             <span style={{ fontFamily: F.body, fontSize: 12, color: C.textMuted }}>· 450+ avis</span>
           </div>
         </div>
-
-        {/* Scroll indicator */}
-        <div style={{
-          position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)",
-          zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
-          opacity: scrollY > 100 ? 0 : 1, transition: "opacity 0.5s",
-        }}>
+        <div style={{ position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)", zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center", gap: 8, opacity: scrollY > 100 ? 0 : 1, transition: "opacity 0.5s" }}>
           <span style={{ fontFamily: F.body, fontSize: 9, color: C.textDim, letterSpacing: 4, textTransform: "uppercase" }}>Scroll</span>
           <div style={{ width: 1, height: 36, background: `linear-gradient(to bottom, ${C.textDim}, transparent)`, animation: "scrollPulse 2s ease infinite" }} />
         </div>
       </section>
 
-      {/* ── VIDEO/INTRO ── */}
-      <section style={{ padding: "100px 40px", background: C.bg }}>
+      <section style={{ padding, background: C.bg }}>
         <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
           <FadeIn>
             <SectionLabel>Qui se trouve derrière l'objectif ?</SectionLabel>
@@ -809,33 +622,19 @@ function HomePage({ navigate }) {
             </p>
           </FadeIn>
           <FadeIn delay={0.15}>
-            <div style={{
-              position: "relative", aspectRatio: "16/9", background: C.surface,
-              overflow: "hidden", borderRadius: 2,
-            }}>
-              <iframe
-                src="https://www.youtube.com/embed/BQI02ASMMgk?rel=0&modestbranding=1&color=white"
-                style={{ width: "100%", height: "100%", border: "none" }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                title="Hani Kanaftchian — Photographe Bruxelles"
-                loading="lazy"
-              />
+            <div style={{ position: "relative", aspectRatio: "16/9", background: C.surface, overflow: "hidden", borderRadius: 2 }}>
+              <iframe src="https://www.youtube.com/embed/BQI02ASMMgk?rel=0&modestbranding=1&color=white" style={{ width: "100%", height: "100%", border: "none" }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen title="Hani Kanaftchian" loading="lazy" />
             </div>
           </FadeIn>
         </div>
       </section>
 
-      {/* ── STUDIO TEASER ── */}
-      <section style={{ padding: "100px 40px", background: C.bgAlt, borderTop: `1px solid ${C.border}` }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
+      <section style={{ padding, background: C.bgAlt, borderTop: `1px solid ${C.border}` }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 60, alignItems: "center" }}>
           <FadeIn>
             <div style={{ position: "relative" }}>
               <img src={IMAGES.studioMain} alt="Studio photo Bruxelles" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover" }} />
-              <div style={{
-                position: "absolute", bottom: -16, right: -16, padding: "20px 28px",
-                background: C.bg, border: `1px solid ${C.accent}30`,
-              }}>
+              <div style={{ position: "absolute", bottom: isMobile ? 0 : -16, right: isMobile ? 0 : -16, padding: "20px 28px", background: C.bg, border: `1px solid ${C.accent}30` }}>
                 <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase" }}>Bruxelles & Leuven</div>
               </div>
             </div>
@@ -853,21 +652,14 @@ function HomePage({ navigate }) {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ── */}
-      <section style={{ padding: "100px 40px", background: C.bg, borderTop: `1px solid ${C.border}` }}>
+      <section style={{ padding, background: C.bg, borderTop: `1px solid ${C.border}` }}>
         <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
           <FadeIn>
             <SectionLabel>Ils ont adoré l'expérience ★★★★★</SectionLabel>
             <div style={{ fontFamily: F.display, fontSize: 64, color: C.accent, opacity: 0.2, lineHeight: 1, marginTop: 32 }}>"</div>
             <div style={{ position: "relative", minHeight: 180 }}>
               {TESTIMONIALS.map((t, i) => (
-                <div key={i} style={{
-                  position: i === currentTestimonial ? "relative" : "absolute",
-                  top: 0, left: 0, right: 0,
-                  opacity: i === currentTestimonial ? 1 : 0,
-                  transform: i === currentTestimonial ? "translateY(0)" : "translateY(20px)",
-                  transition: "all 0.8s cubic-bezier(0.22,1,0.36,1)",
-                }}>
+                <div key={i} style={{ position: i === currentTestimonial ? "relative" : "absolute", top: 0, left: 0, right: 0, opacity: i === currentTestimonial ? 1 : 0, transform: i === currentTestimonial ? "translateY(0)" : "translateY(20px)", transition: "all 0.8s cubic-bezier(0.22,1,0.36,1)" }}>
                   <p style={{ fontFamily: F.display, fontSize: 21, fontWeight: 300, fontStyle: "italic", color: C.text, lineHeight: 1.7 }}>
                     {t.text}
                   </p>
@@ -880,19 +672,14 @@ function HomePage({ navigate }) {
             </div>
             <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 40 }}>
               {TESTIMONIALS.map((_, i) => (
-                <button key={i} onClick={() => setCurrentTestimonial(i)} style={{
-                  width: i === currentTestimonial ? 28 : 8, height: 3, borderRadius: 2,
-                  border: "none", background: i === currentTestimonial ? C.accent : C.textDim,
-                  cursor: "pointer", padding: 0, transition: "all 0.4s",
-                }} />
+                <button key={i} onClick={() => setCurrentTestimonial(i)} style={{ width: i === currentTestimonial ? 28 : 8, height: 3, borderRadius: 2, border: "none", background: i === currentTestimonial ? C.accent : C.textDim, cursor: "pointer", padding: 0, transition: "all 0.4s" }} />
               ))}
             </div>
           </FadeIn>
         </div>
       </section>
 
-      {/* ── PARTNERS ── */}
-      <section style={{ padding: "80px 40px", background: C.bgAlt, borderTop: `1px solid ${C.border}` }}>
+      <section style={{ padding: isMobile ? "60px 20px" : "80px 40px", background: C.bgAlt, borderTop: `1px solid ${C.border}` }}>
         <FadeIn>
           <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
             <SectionLabel>Références clients</SectionLabel>
@@ -904,8 +691,7 @@ function HomePage({ navigate }) {
         </FadeIn>
       </section>
 
-      {/* ── PORTFOLIO PREVIEW ── */}
-      <section style={{ padding: "100px 40px", background: C.bg, borderTop: `1px solid ${C.border}` }}>
+      <section style={{ padding, background: C.bg, borderTop: `1px solid ${C.border}` }}>
         <div style={{ maxWidth: 1400, margin: "0 auto" }}>
           <FadeIn>
             <SectionLabel>Portfolio photo récent</SectionLabel>
@@ -916,35 +702,31 @@ function HomePage({ navigate }) {
               Du portrait artistique aux shootings corporate, découvrez une sélection de mes dernières créations photographiques.
             </p>
           </FadeIn>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 4, marginTop: 60 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(4, 1fr)", gap: 4, marginTop: 60 }}>
             {IMAGES.portrait.slice(0, 8).map((src, i) => (
               <FadeIn key={i} delay={i * 0.06}>
                 <PhotoCard src={src} aspect={i % 3 === 0 ? "3/4" : "4/5"} onClick={() => navigate("/portrait")} />
               </FadeIn>
             ))}
           </div>
-
           <div style={{ textAlign: "center", marginTop: 48 }}>
             <GoldButton onClick={() => navigate("/photos")} variant="outline">Explorer tout le portfolio</GoldButton>
           </div>
         </div>
       </section>
 
-      {/* ── CTA ── */}
-      <section style={{ padding: "120px 40px", background: C.bgAlt, borderTop: `1px solid ${C.border}`, textAlign: "center" }}>
+      <section style={{ padding: "120px 20px", background: C.bgAlt, borderTop: `1px solid ${C.border}`, textAlign: "center" }}>
         <FadeIn>
           <SectionTitle style={{ fontSize: "clamp(32px, 5vw, 60px)" }}>
             Envie de vivre <Accent>l'expérience</Accent> ?
           </SectionTitle>
           <p style={{ fontFamily: F.body, fontSize: 16, color: C.textMuted, marginTop: 20, lineHeight: 1.7 }}>
-            Que ce soit pour une séance en solo, en couple, en famille ou pour un projet professionnel,<br />
-            je serais ravi de vous recevoir dans mon studio à Bruxelles.
+            Que ce soit pour une séance en solo, en couple, en famille ou pour un projet professionnel, je serais ravi de vous recevoir dans mon studio à Bruxelles.
           </p>
           <div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 40, flexWrap: "wrap" }}>
             <GoldButton onClick={() => navigate("/reservation-shooting-photo")}>📸 Réservez votre prochaine séance →</GoldButton>
           </div>
-          <div style={{ display: "flex", gap: 40, justifyContent: "center", marginTop: 32, fontFamily: F.body, fontSize: 13, color: C.textDim }}>
+          <div style={{ display: "flex", gap: 40, justifyContent: "center", marginTop: 32, fontFamily: F.body, fontSize: 13, color: C.textDim, flexWrap: "wrap" }}>
             <span>📍 Studio photo à Bruxelles</span>
             <span>⏱️ Réponse sous 24h</span>
           </div>
@@ -954,32 +736,17 @@ function HomePage({ navigate }) {
   );
 }
 
-// ════════════════════════════════════════════════════════════════
-// PAGE: PORTFOLIO / GALLERY (reusable)
-// ════════════════════════════════════════════════════════════════
-
-function GalleryPage({ navigate, title, subtitle, description, images, heroImage }) {
+function GalleryPage({ navigate, title, subtitle, description, images, heroImage, isMobile }) {
   const [lightboxIdx, setLightboxIdx] = useState(-1);
 
   return (
     <>
-      {/* Hero */}
       <section style={{ position: "relative", height: "60vh", overflow: "hidden" }}>
-        <img src={heroImage || images[0]} alt="" style={{
-          width: "100%", height: "100%", objectFit: "cover", opacity: 0.4,
-        }} />
-        <div style={{
-          position: "absolute", inset: 0,
-          background: `linear-gradient(to bottom, ${C.bg}80, ${C.bg}F0)`,
-          display: "flex", flexDirection: "column", justifyContent: "flex-end",
-          padding: "60px 40px",
-        }}>
+        <img src={heroImage || images[0]} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.4 }} />
+        <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to bottom, ${C.bg}80, ${C.bg}F0)`, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: isMobile ? "60px 20px" : "60px 40px" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%" }}>
             <SectionLabel>{subtitle || "Portfolio"}</SectionLabel>
-            <h1 style={{
-              fontFamily: F.display, fontSize: "clamp(36px, 5vw, 64px)",
-              fontWeight: 300, color: C.text, margin: 0,
-            }}>{title}</h1>
+            <h1 style={{ fontFamily: F.display, fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 300, color: C.text, margin: 0 }}>{title}</h1>
             {description && (
               <p style={{ fontFamily: F.body, fontSize: 16, color: C.textMuted, marginTop: 16, maxWidth: 600, lineHeight: 1.7 }}>
                 {description}
@@ -989,29 +756,19 @@ function GalleryPage({ navigate, title, subtitle, description, images, heroImage
         </div>
       </section>
 
-      {/* Gallery Grid */}
-      <section style={{ padding: "60px 40px 100px", background: C.bg }}>
+      <section style={{ padding: isMobile ? "60px 20px 100px" : "60px 40px 100px", background: C.bg }}>
         <div style={{ maxWidth: 1400, margin: "0 auto" }}>
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: 4,
-          }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(4, 1fr)", gap: 4 }}>
             {images.map((src, i) => (
               <FadeIn key={i} delay={Math.min(i * 0.04, 0.4)}>
-                <PhotoCard
-                  src={src}
-                  aspect={i % 5 === 0 ? "4/5" : i % 7 === 0 ? "4/3" : "3/4"}
-                  onClick={() => setLightboxIdx(i)}
-                />
+                <PhotoCard src={src} aspect={i % 5 === 0 ? "4/5" : i % 7 === 0 ? "4/3" : "3/4"} onClick={() => setLightboxIdx(i)} />
               </FadeIn>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section style={{ padding: "80px 40px", background: C.bgAlt, borderTop: `1px solid ${C.border}`, textAlign: "center" }}>
+      <section style={{ padding: isMobile ? "60px 20px" : "80px 40px", background: C.bgAlt, borderTop: `1px solid ${C.border}`, textAlign: "center" }}>
         <FadeIn>
           <SectionTitle>Envie d'une séance <Accent>unique</Accent> ?</SectionTitle>
           <div style={{ marginTop: 32 }}>
@@ -1020,25 +777,16 @@ function GalleryPage({ navigate, title, subtitle, description, images, heroImage
         </FadeIn>
       </section>
 
-      <Lightbox
-        images={images}
-        index={lightboxIdx}
-        onClose={() => setLightboxIdx(-1)}
-        onNav={(dir) => setLightboxIdx((p) => (p + dir + images.length) % images.length)}
-      />
+      <Lightbox images={images} index={lightboxIdx} onClose={() => setLightboxIdx(-1)} onNav={(dir) => setLightboxIdx((p) => (p + dir + images.length) % images.length)} />
     </>
   );
 }
 
-// ════════════════════════════════════════════════════════════════
-// PAGE: TARIFS
-// ════════════════════════════════════════════════════════════════
-
-function TarifsPage({ navigate }) {
+function TarifsPage({ navigate, isMobile }) {
   const [hoveredService, setHoveredService] = useState(null);
   return (
     <>
-      <section style={{ padding: "160px 40px 40px", background: C.bg }}>
+      <section style={{ padding: isMobile ? "160px 20px 40px" : "160px 40px 40px", background: C.bg }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <FadeIn>
             <SectionLabel>Découvrez les prix par type de séance</SectionLabel>
@@ -1050,33 +798,19 @@ function TarifsPage({ navigate }) {
         </div>
       </section>
 
-      <section style={{ padding: "40px 40px 80px", background: C.bg }}>
+      <section style={{ padding: isMobile ? "40px 20px 80px" : "40px 40px 80px", background: C.bg }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 3 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fill, minmax(200px, 1fr))", gap: 3 }}>
             {SERVICES_LIST.map((s, i) => (
               <FadeIn key={i} delay={i * 0.04}>
-                <div
-                  onClick={() => navigate(s.slug)}
-                  onMouseEnter={() => setHoveredService(i)}
-                  onMouseLeave={() => setHoveredService(null)}
-                  style={{
-                    padding: "36px 24px", cursor: "pointer",
-                    background: hoveredService === i ? C.surfaceHover : C.surface,
-                    borderBottom: hoveredService === i ? `2px solid ${C.accent}` : `2px solid transparent`,
-                    transition: "all 0.4s",
-                    textAlign: "center",
-                  }}
-                >
+                <div onClick={() => navigate(s.slug)} onMouseEnter={() => setHoveredService(i)} onMouseLeave={() => setHoveredService(null)} style={{ padding: "36px 24px", cursor: "pointer", background: hoveredService === i ? C.surfaceHover : C.surface, borderBottom: hoveredService === i ? `2px solid ${C.accent}` : `2px solid transparent`, transition: "all 0.4s", textAlign: "center" }}>
                   <div style={{ fontSize: 32, marginBottom: 16 }}>{s.icon}</div>
-                  <div style={{
-                    fontFamily: F.display, fontSize: 17, fontWeight: 400, color: C.text,
-                  }}>{s.title}</div>
+                  <div style={{ fontFamily: F.display, fontSize: 17, fontWeight: 400, color: C.text }}>{s.title}</div>
                 </div>
               </FadeIn>
             ))}
           </div>
 
-          {/* Quote */}
           <FadeIn>
             <div style={{ marginTop: 80, textAlign: "center", padding: "60px 40px", borderTop: `1px solid ${C.border}` }}>
               <p style={{ fontFamily: F.display, fontSize: 22, fontStyle: "italic", color: C.textMuted, fontWeight: 300, lineHeight: 1.7 }}>
@@ -1091,20 +825,12 @@ function TarifsPage({ navigate }) {
   );
 }
 
-// ════════════════════════════════════════════════════════════════
-// PAGE: STUDIO
-// ════════════════════════════════════════════════════════════════
-
-function StudioPage({ navigate }) {
+function StudioPage({ navigate, isMobile }) {
   return (
     <>
       <section style={{ position: "relative", height: "60vh", overflow: "hidden" }}>
         <img src={IMAGES.studioMain} alt="Studio" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.5 }} />
-        <div style={{
-          position: "absolute", inset: 0,
-          background: `linear-gradient(to bottom, ${C.bg}60, ${C.bg}F0)`,
-          display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "60px 40px",
-        }}>
+        <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to bottom, ${C.bg}60, ${C.bg}F0)`, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: isMobile ? "60px 20px" : "60px 40px" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%" }}>
             <SectionLabel>Démarquez-vous</SectionLabel>
             <h1 style={{ fontFamily: F.display, fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 300, color: C.text, margin: 0 }}>
@@ -1114,23 +840,22 @@ function StudioPage({ navigate }) {
         </div>
       </section>
 
-      <section style={{ padding: "80px 40px", background: C.bg }}>
+      <section style={{ padding: isMobile ? "60px 20px" : "80px 40px", background: C.bg }}>
         <div style={{ maxWidth: 900, margin: "0 auto" }}>
           <FadeIn>
             <h2 style={{ fontFamily: F.display, fontSize: 32, fontWeight: 300, color: C.text }}>
               Un studio photo dans un style <Accent>Feng Shui</Accent> ?
             </h2>
             <p style={{ fontFamily: F.body, fontSize: 16, color: C.textMuted, lineHeight: 1.8, marginTop: 24 }}>
-              Dans un cadre spacieux, chaleureux et contemporain, les studios intègrent chacun un plateau de 130m² pour vous offrir un service de location d'un espace dédié à la photographie et à la vidéo. Les lieux sont adaptables et utilisables dans leur ensemble pour tous types de projets : mode, beauté, coiffure, produits, publicité, entreprise, presse, tournage vidéo et évènementiel.
+              Dans un cadre spacieux, chaleureux et contemporain, les studios intègrent chacun un plateau de 130m² pour vous offrir un service de location d'un espace dédié à la photographie et à la vidéo. Les lieux sont adaptables et utilisables dans leur ensemble pour tous types de projets.
             </p>
           </FadeIn>
         </div>
       </section>
 
-      {/* Studio gallery */}
-      <section style={{ padding: "0 40px 100px", background: C.bg }}>
+      <section style={{ padding: isMobile ? "0 20px 100px" : "0 40px 100px", background: C.bg }}>
         <div style={{ maxWidth: 1400, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 4 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(4, 1fr)", gap: 4 }}>
             {IMAGES.studio.map((src, i) => (
               <FadeIn key={i} delay={i * 0.06}>
                 <PhotoCard src={src} aspect="4/3" />
@@ -1140,7 +865,7 @@ function StudioPage({ navigate }) {
         </div>
       </section>
 
-      <section style={{ padding: "80px 40px", background: C.bgAlt, borderTop: `1px solid ${C.border}`, textAlign: "center" }}>
+      <section style={{ padding: isMobile ? "60px 20px" : "80px 40px", background: C.bgAlt, borderTop: `1px solid ${C.border}`, textAlign: "center" }}>
         <FadeIn>
           <SectionTitle>Envie de <Accent>louer</Accent> le studio ?</SectionTitle>
           <div style={{ marginTop: 32 }}>
@@ -1152,20 +877,12 @@ function StudioPage({ navigate }) {
   );
 }
 
-// ════════════════════════════════════════════════════════════════
-// PAGE: ABOUT
-// ════════════════════════════════════════════════════════════════
-
-function AboutPage({ navigate }) {
+function AboutPage({ navigate, isMobile }) {
   return (
     <>
       <section style={{ position: "relative", height: "60vh", overflow: "hidden" }}>
         <img src={IMAGES.aboutHero} alt="Hani" style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.5 }} />
-        <div style={{
-          position: "absolute", inset: 0,
-          background: `linear-gradient(to bottom, ${C.bg}60, ${C.bg}F0)`,
-          display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "60px 40px",
-        }}>
+        <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to bottom, ${C.bg}60, ${C.bg}F0)`, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: isMobile ? "60px 20px" : "60px 40px" }}>
           <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%" }}>
             <SectionLabel>Passionné, perfectionniste, à votre écoute depuis plus de 10 ans</SectionLabel>
             <h1 style={{ fontFamily: F.display, fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 300, color: C.text, margin: 0 }}>
@@ -1175,17 +892,12 @@ function AboutPage({ navigate }) {
         </div>
       </section>
 
-      <section style={{ padding: "100px 40px", background: C.bg }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: 80, alignItems: "start" }}>
+      <section style={{ padding: isMobile ? "60px 20px" : "100px 40px", background: C.bg }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1.2fr", gap: isMobile ? 40 : 80, alignItems: "start" }}>
           <FadeIn>
             <div style={{ position: "relative" }}>
               <img src={IMAGES.aboutPortrait} alt="Hani Kanaftchian" style={{ width: "100%", aspectRatio: "3/4", objectFit: "cover" }} />
-              <div style={{
-                position: "absolute", bottom: -20, right: -20,
-                width: 160, height: 160, border: `1px solid ${C.accent}30`,
-                background: C.bg, display: "flex", flexDirection: "column",
-                alignItems: "center", justifyContent: "center",
-              }}>
+              <div style={{ position: "absolute", bottom: isMobile ? 0 : -20, right: isMobile ? 0 : -20, width: 160, height: 160, border: `1px solid ${C.accent}30`, background: C.bg, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                 <div style={{ fontFamily: F.display, fontSize: 44, color: C.accent, fontWeight: 300 }}>10+</div>
                 <div style={{ fontFamily: F.body, fontSize: 10, color: C.textMuted, letterSpacing: 2, textTransform: "uppercase" }}>Années</div>
               </div>
@@ -1195,7 +907,7 @@ function AboutPage({ navigate }) {
           <FadeIn delay={0.15}>
             <h2 style={{ fontFamily: F.display, fontSize: 28, fontWeight: 300, color: C.accent }}>Observateur attentif…</h2>
             <p style={{ fontFamily: F.body, fontSize: 16, color: C.textMuted, lineHeight: 1.8, marginTop: 20 }}>
-              Photographe professionnel, à 30 ans, Hani a fait de sa passion son métier. Curieux du monde qui l'entoure, il ne se promène jamais sans son appareil photo, profitant de la moindre occasion pour s'en servir.
+              Photographe professionnel, à 30 ans, Hani a fait de sa passion son métier. Curieux du monde qui l'entoure, il ne se promène jamais sans son appareil photo.
             </p>
             <p style={{ fontFamily: F.body, fontSize: 16, color: C.textMuted, lineHeight: 1.8, marginTop: 16 }}>
               Un reflet, une ombre, une lumière particulière… Hani pose son œil d'artiste sur chaque chose et sublime la réalité.
@@ -1206,21 +918,19 @@ function AboutPage({ navigate }) {
               En extérieur ou en studio, Hani s'adapte à toutes les situations. Lieu, lumière, météo… Pour lui, pas de contraintes, seulement des défis à relever !
             </p>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 40 }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16, marginTop: 40 }}>
               {[
                 { city: "Bruxelles", address: "Rue Vanderkindere 524, 1180" },
                 { city: "Leuven (Heverlee)", address: "Studio disponible 7j/7" },
               ].map((s, i) => (
-                <div key={i} style={{
-                  padding: 24, background: C.surface, borderLeft: `2px solid ${C.accent}40`,
-                }}>
+                <div key={i} style={{ padding: 24, background: C.surface, borderLeft: `2px solid ${C.accent}40` }}>
                   <div style={{ fontFamily: F.display, fontSize: 17, color: C.text }}>{s.city}</div>
                   <div style={{ fontFamily: F.body, fontSize: 12, color: C.textDim, marginTop: 4 }}>{s.address}</div>
                 </div>
               ))}
             </div>
 
-            <div style={{ marginTop: 40, display: "flex", gap: 16 }}>
+            <div style={{ marginTop: 40, display: "flex", gap: 16, flexWrap: "wrap" }}>
               <GoldButton onClick={() => navigate("/contact")}>Contact</GoldButton>
               <GoldButton onClick={() => navigate("/a-propos")} variant="outline">En savoir plus</GoldButton>
             </div>
@@ -1231,19 +941,15 @@ function AboutPage({ navigate }) {
   );
 }
 
-// ════════════════════════════════════════════════════════════════
-// PAGE: REFERENCES
-// ════════════════════════════════════════════════════════════════
-
-function ReferencesPage({ navigate }) {
+function ReferencesPage({ isMobile }) {
   return (
     <>
-      <section style={{ padding: "160px 40px 60px", background: C.bg }}>
+      <section style={{ padding: isMobile ? "160px 20px 60px" : "160px 40px 60px", background: C.bg }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", textAlign: "center" }}>
           <FadeIn>
             <SectionLabel>Ils ont adoré l'expérience ★★★★★</SectionLabel>
             <SectionTitle>Avis clients <Accent>Google</Accent></SectionTitle>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginTop: 32 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginTop: 32, flexWrap: "wrap" }}>
               <span style={{ fontFamily: F.display, fontSize: 56, color: C.accent }}>4.9</span>
               <div>
                 <div style={{ color: "#F5C518", fontSize: 20 }}>★★★★★</div>
@@ -1254,9 +960,9 @@ function ReferencesPage({ navigate }) {
         </div>
       </section>
 
-      <section style={{ padding: "40px 40px 100px", background: C.bg }}>
+      <section style={{ padding: isMobile ? "40px 20px 100px" : "40px 40px 100px", background: C.bg }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 20 }}>
             {TESTIMONIALS.map((t, i) => (
               <FadeIn key={i} delay={i * 0.1}>
                 <div style={{ padding: 36, background: C.surface, borderLeft: `2px solid ${C.accent}30` }}>
@@ -1274,425 +980,143 @@ function ReferencesPage({ navigate }) {
   );
 }
 
-// ════════════════════════════════════════════════════════════════
-// PAGE: CONTACT
-// ════════════════════════════════════════════════════════════════
-
-function ContactPage({ navigate }) {
+function ContactPage({ navigate, isMobile }) {
   const [form, setForm] = useState({ name: "", email: "", phone: "", service: "", message: "" });
   const [sent, setSent] = useState(false);
 
-  const InputField = ({ label, field, type = "text" }) => (
-    <div style={{ marginBottom: 20 }}>
-      <label style={{ display: "block", fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>{label}</label>
-      <input
-        type={type}
-        value={form[field]}
-        onChange={(e) => setForm({ ...form, [field]: e.target.value })}
-        style={{
-          width: "100%",
-          padding: "14px 16px",
-          background: C.bgAlt,
-          border: `1px solid ${C.border}`,
-          borderRadius: 0,
-          color: C.text,
-          fontFamily: F.body,
-          fontSize: 15,
-          outline: "none",
-          boxSizing: "border-box",
-          transition: "border 0.3s",
-        }}
-        onFocus={(e) => e.target.style.borderColor = C.accent}
-        onBlur={(e) => e.target.style.borderColor = C.border}
-      />
-    </div>
-  );
-
-  const handleSubmit = () => {
-    const subject = `Demande de contact - ${form.service || "Sans prestation"}`;
-    const body = `Nom: ${form.name}\nEmail: ${form.email}\nTéléphone: ${form.phone}\nPrestation: ${form.service}\n\nMessage:\n${form.message}`;
-    window.location.href = `mailto:hani@kanaftchian.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setSent(true);
-    setTimeout(() => setSent(false), 3000);
+  const InputField = ({ label, field, type = "text", isTextarea = false }) => {
+    const Component = isTextarea ? "textarea" : "input";
+    return (
+      <div style={{ marginBottom: 20 }}>
+        <label style={{ display: "block", fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>{label}</label>
+        <Component
+          type={type}
+          value={form[field]}
+          onChange={(e) => setForm({ ...form, [field]: e.target.value })}
+          rows={isTextarea ? 6 : undefined}
+          style={{
+            width: "100%",
+            padding: "14px 16px",
+            background: C.bgAlt,
+            border: `1px solid ${C.border}`,
+            borderRadius: 0,
+            color: C.text,
+            fontFamily: F.body,
+            fontSize: 14,
+            resize: isTextarea ? "vertical" : "none",
+          }}
+        />
+      </div>
+    );
   };
 
   return (
-    <section style={{ padding: "160px 40px 100px", background: C.bg, minHeight: "100vh" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80 }}>
-        <FadeIn>
-          <SectionLabel>Contact</SectionLabel>
-          <SectionTitle>Parlons de votre <Accent>projet</Accent></SectionTitle>
-          <div style={{ width: 50, height: 1, background: C.accent, margin: "36px 0" }} />
-
-          <div style={{ marginBottom: 32 }}>
-            <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 6 }}>Téléphone</div>
-            <div
-              onClick={() => window.location.href = `tel:${SITE.phone.replace(/\s/g, "")}`}
-              style={{
-                fontFamily: F.body,
-                fontSize: 16,
-                color: C.text,
-                fontWeight: 300,
-                cursor: "pointer",
-                transition: "color 0.3s",
-              }}
-              onMouseEnter={(e) => e.target.style.color = C.accent}
-              onMouseLeave={(e) => e.target.style.color = C.text}
-            >
-              {SITE.phone}
-            </div>
-          </div>
-
-          <div style={{ marginBottom: 32 }}>
-            <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 6 }}>Email</div>
-            <div
-              onClick={() => window.location.href = "mailto:hani@kanaftchian.com"}
-              style={{
-                fontFamily: F.body,
-                fontSize: 16,
-                color: C.text,
-                fontWeight: 300,
-                cursor: "pointer",
-                transition: "color 0.3s",
-              }}
-              onMouseEnter={(e) => e.target.style.color = C.accent}
-              onMouseLeave={(e) => e.target.style.color = C.text}
-            >
-              hani@kanaftchian.com
-            </div>
-          </div>
-
-          <div style={{ marginBottom: 32 }}>
-            <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 6 }}>Studio Bruxelles</div>
-            <div style={{ fontFamily: F.body, fontSize: 16, color: C.text, fontWeight: 300 }}>
-              {SITE.address}
-            </div>
-          </div>
-
-          <div style={{ marginBottom: 32 }}>
-            <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 6 }}>Horaires</div>
-            <div style={{ fontFamily: F.body, fontSize: 16, color: C.text, fontWeight: 300 }}>
-              {SITE.hours}
-            </div>
-          </div>
-
-          <div style={{ marginTop: 60, marginBottom: 32 }}>
-            <div style={{ fontFamily: F.body, fontSize: 10, color: C.accent, letterSpacing: 3, textTransform: "uppercase", marginBottom: 20 }}>Localisation</div>
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2519.2498885793817!2d4.366157!3d50.8096!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3e0e0e0e0e0e1%3A0x0!2sRue%20Vanderkindere%20524%2C%201180%20Bruxelles!5e0!3m2!1sfr!2sbe!4v1234567890"
-              width="100%"
-              height="300"
-              style={{ border: `1px solid ${C.border}`, filter: "invert(90%) hue-rotate(180deg) brightness(0.9) contrast(0.9)" }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
-        </FadeIn>
-
-        <FadeIn delay={0.15}>
-          <div style={{ padding: 40, background: C.surface }}>
-            {sent ? (
-              <div style={{ textAlign: "center", padding: "60px 20px" }}>
-                <div style={{ fontFamily: F.display, fontSize: 28, color: C.accent, marginBottom: 16 }}>✓</div>
-                <h3 style={{ fontFamily: F.display, fontSize: 24, fontWeight: 400, color: C.text, margin: "0 0 12px" }}>Merci !</h3>
-                <p style={{ fontFamily: F.body, fontSize: 14, color: C.textMuted }}>
-                  Votre message a été envoyé. Je vous répondrai sous 24h.
-                </p>
-              </div>
-            ) : (
-              <>
-                <h3 style={{ fontFamily: F.display, fontSize: 24, fontWeight: 400, color: C.text, margin: "0 0 32px" }}>
-                  Demande de contact
-                </h3>
-                <InputField label="Nom complet" field="name" />
-                <InputField label="Email" field="email" type="email" />
-                <InputField label="Téléphone" field="phone" type="tel" />
-                <div style={{ marginBottom: 20 }}>
-                  <label style={{
-                    display: "block",
-                    fontFamily: F.body,
-                    fontSize: 10,
-                    color: C.accent,
-                    letterSpacing: 2,
-                    textTransform: "uppercase",
-                    marginBottom: 8,
-                  }}>
-                    Prestation
-                  </label>
-                  <select
-                    value={form.service}
-                    onChange={(e) => setForm({ ...form, service: e.target.value })}
-                    style={{
-                      width: "100%",
-                      padding: "14px 16px",
-                      background: C.bgAlt,
-                      border: `1px solid ${C.border}`,
-                      color: C.text,
-                      fontFamily: F.body,
-                      fontSize: 15,
-                      outline: "none",
-                      boxSizing: "border-box",
-                    }}
-                  >
-                    <option value="">Sélectionnez...</option>
-                    {SERVICES_LIST.map((s) => <option key={s.title} value={s.title}>{s.title}</option>)}
-                  </select>
-                </div>
-                <div style={{ marginBottom: 28 }}>
-                  <label style={{
-                    display: "block",
-                    fontFamily: F.body,
-                    fontSize: 10,
-                    color: C.accent,
-                    letterSpacing: 2,
-                    textTransform: "uppercase",
-                    marginBottom: 8,
-                  }}>
-                    Message
-                  </label>
-                  <textarea
-                    rows={4}
-                    value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    style={{
-                      width: "100%",
-                      padding: "14px 16px",
-                      background: C.bgAlt,
-                      border: `1px solid ${C.border}`,
-                      color: C.text,
-                      resize: "vertical",
-                      fontFamily: F.body,
-                      fontSize: 15,
-                      outline: "none",
-                      boxSizing: "border-box",
-                    }}
-                    onFocus={(e) => e.target.style.borderColor = C.accent}
-                    onBlur={(e) => e.target.style.borderColor = C.border}
-                  />
-                </div>
-                <GoldButton onClick={handleSubmit} style={{ width: "100%" }}>
-                  Envoyer ma demande
-                </GoldButton>
-              </>
-            )}
-          </div>
-        </FadeIn>
-      </div>
-    </section>
-  );
-}
-
-// ════════════════════════════════════════════════════════════════
-// PAGE: RESERVATION
-// ════════════════════════════════════════════════════════════════
-
-function ReservationPage({ navigate }) {
-  const [iframeLoaded, setIframeLoaded] = useState(false);
-
-  return (
     <>
-      <section style={{ padding: "160px 40px 100px", background: C.bg, minHeight: "100vh" }}>
-        <FadeIn>
-          <SectionLabel>Réservation en ligne</SectionLabel>
-          <SectionTitle>Réservez votre <Accent>séance photo</Accent></SectionTitle>
+      <section style={{ padding: isMobile ? "160px 20px 60px" : "160px 40px 60px", background: C.bg }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <FadeIn>
+            <SectionLabel>Envoyez-moi un message</SectionLabel>
+            <SectionTitle>Me <Accent>contacter</Accent></SectionTitle>
+          </FadeIn>
+        </div>
+      </section>
 
-          {/* SimplyBook.me Iframe */}
-          <div style={{ maxWidth: 1200, margin: "60px auto", position: "relative", minHeight: 600 }}>
-            {!iframeLoaded && (
-              <div style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                zIndex: 10,
-              }}>
-                <div style={{
-                  width: 50,
-                  height: 50,
-                  border: `3px solid ${C.border}`,
-                  borderTop: `3px solid ${C.accent}`,
-                  borderRadius: "50%",
-                  animation: "spin 1s linear infinite",
-                }} />
-              </div>
-            )}
-            <div style={{
-              background: C.surface,
-              borderRadius: 4,
-              overflow: "hidden",
-              minHeight: 600,
-              display: iframeLoaded ? "block" : "none",
-            }}>
-              <iframe
-                src="https://hanikanaftchian.simplybook.it/v2/#book"
-                style={{
-                  width: "100%",
-                  height: "600px",
-                  border: "none",
-                  display: "block",
-                }}
-                onLoad={() => setIframeLoaded(true)}
-                title="SimplyBook.me - Réservation"
-              />
-            </div>
-          </div>
+      <section style={{ padding: isMobile ? "60px 20px 100px" : "80px 40px 100px", background: C.bg }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 40 : 80 }}>
+          <FadeIn>
+            <form style={{ display: "flex", flexDirection: "column" }} onSubmit={(e) => { e.preventDefault(); window.location.href = `mailto:${SITE.email}?subject=Nouvelle demande de ${form.name}&body=${encodeURIComponent(form.message)}`; setSent(true); }}>
+              <InputField label="Votre nom" field="name" />
+              <InputField label="Votre email" field="email" type="email" />
+              <InputField label="Téléphone" field="phone" type="tel" />
+              <InputField label="Sujet" field="service" />
+              <InputField label="Message" field="message" isTextarea={true} />
+              <GoldButton>Envoyer</GoldButton>
+              {sent && <div style={{ marginTop: 20, color: C.accent, textAlign: "center" }}>Message envoyé!</div>}
+            </form>
+          </FadeIn>
 
-          {/* Info Cards */}
-          <div style={{
-            maxWidth: 1200,
-            margin: "80px auto 0",
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 32,
-          }}>
-            <FadeIn delay={0.1}>
-              <div style={{
-                padding: 40,
-                background: C.surface,
-                border: `1px solid ${C.border}`,
-                textAlign: "center",
-              }}>
-                <div style={{
-                  fontFamily: F.display,
-                  fontSize: 28,
-                  color: C.accent,
-                  marginBottom: 12,
-                }}>
-                  📍
-                </div>
-                <h4 style={{
-                  fontFamily: F.display,
-                  fontSize: 16,
-                  color: C.text,
-                  margin: "0 0 12px",
-                }}>
-                  Studio Bruxelles
-                </h4>
-                <p style={{
-                  fontFamily: F.body,
-                  fontSize: 13,
-                  color: C.textMuted,
-                  margin: 0,
-                  lineHeight: 1.6,
-                }}>
-                  {SITE.address}
-                </p>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.2}>
-              <div style={{
-                padding: 40,
-                background: C.surface,
-                border: `1px solid ${C.border}`,
-                textAlign: "center",
-              }}>
-                <div style={{
-                  fontFamily: F.display,
-                  fontSize: 28,
-                  color: C.accent,
-                  marginBottom: 12,
-                }}>
-                  ✓
-                </div>
-                <h4 style={{
-                  fontFamily: F.display,
-                  fontSize: 16,
-                  color: C.text,
-                  margin: "0 0 12px",
-                }}>
-                  Réponse rapide
-                </h4>
-                <p style={{
-                  fontFamily: F.body,
-                  fontSize: 13,
-                  color: C.textMuted,
-                  margin: 0,
-                }}>
-                  Je vous recontacterai sous 24h
-                </p>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.3}>
-              <div
-                onClick={() => window.location.href = `tel:${SITE.phone.replace(/\s/g, "")}`}
-                style={{
-                  padding: 40,
-                  background: C.surface,
-                  border: `1px solid ${C.border}`,
-                  textAlign: "center",
-                  cursor: "pointer",
-                  transition: "all 0.3s",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = C.accent;
-                  e.currentTarget.style.background = `${C.accent}10`;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = C.border;
-                  e.currentTarget.style.background = C.surface;
-                }}
-              >
-                <div style={{
-                  fontFamily: F.display,
-                  fontSize: 28,
-                  color: C.accent,
-                  marginBottom: 12,
-                }}>
-                  ☎️
-                </div>
-                <h4 style={{
-                  fontFamily: F.display,
-                  fontSize: 16,
-                  color: C.text,
-                  margin: "0 0 12px",
-                }}>
-                  Téléphone
-                </h4>
-                <p style={{
-                  fontFamily: F.body,
-                  fontSize: 13,
-                  color: C.textMuted,
-                  margin: 0,
-                }}>
+          <FadeIn delay={0.15}>
+            <div>
+              <h3 style={{ fontFamily: F.display, fontSize: 24, fontWeight: 300, color: C.accent, marginBottom: 32 }}>Infos pratiques</h3>
+              <div style={{ marginBottom: 32 }}>
+                <div style={{ fontFamily: F.body, fontSize: 11, color: C.accent, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>Téléphone</div>
+                <div onClick={() => window.location.href = `tel:${SITE.phone.replace(/\s/g, "")}`} style={{ fontFamily: F.body, fontSize: 16, color: C.text, cursor: "pointer", transition: "color 0.3s" }} onMouseEnter={(e) => e.target.style.color = C.accent} onMouseLeave={(e) => e.target.style.color = C.text}>
                   {SITE.phone}
-                </p>
+                </div>
               </div>
-            </FadeIn>
-          </div>
-        </FadeIn>
+              <div style={{ marginBottom: 32 }}>
+                <div style={{ fontFamily: F.body, fontSize: 11, color: C.accent, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>Email</div>
+                <div onClick={() => window.location.href = `mailto:${SITE.email}`} style={{ fontFamily: F.body, fontSize: 16, color: C.text, cursor: "pointer", transition: "color 0.3s" }} onMouseEnter={(e) => e.target.style.color = C.accent} onMouseLeave={(e) => e.target.style.color = C.text}>
+                  {SITE.email}
+                </div>
+              </div>
+              <div style={{ marginBottom: 32 }}>
+                <div style={{ fontFamily: F.body, fontSize: 11, color: C.accent, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>Adresse</div>
+                <div style={{ fontFamily: F.body, fontSize: 14, color: C.textMuted, lineHeight: 1.7 }}>
+                  {SITE.address}
+                </div>
+              </div>
+              <div>
+                <div style={{ fontFamily: F.body, fontSize: 11, color: C.accent, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>Horaires</div>
+                <div style={{ fontFamily: F.body, fontSize: 14, color: C.textMuted }}>
+                  {SITE.hours}
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
       </section>
     </>
   );
 }
 
-// ════════════════════════════════════════════════════════════════
-// PLACEHOLDER PAGE (for pages not yet fully designed)
-// ════════════════════════════════════════════════════════════════
-
-function VideoPage({ navigate }) {
+function ReservationPage() {
   return (
     <>
-      <section style={{ padding: "160px 40px 40px", background: C.bg }}>
+      <section style={{ padding: "160px 40px 60px", background: C.bg }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <SectionLabel>Réservez votre séance</SectionLabel>
+          <SectionTitle>Ma <Accent>disponibilité</Accent></SectionTitle>
+        </div>
+      </section>
+
+      <section style={{ padding: "60px 40px 100px", background: C.bg }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
           <FadeIn>
-            <SectionLabel>Production et tournage vidéo</SectionLabel>
-            <SectionTitle>Des vidéos <Accent>captivantes</Accent></SectionTitle>
-            <p style={{ fontFamily: F.body, fontSize: 16, color: C.textMuted, marginTop: 16, maxWidth: 700, lineHeight: 1.7 }}>
-              Corporate · Entreprise · Événement · Interview · Mariage · Clip musical — nous créons le message audiovisuel que vous souhaitez communiquer.
-            </p>
+            <div style={{ position: "relative", aspectRatio: "16/9", background: C.surface, borderRadius: 2, overflow: "hidden" }}>
+              <iframe
+                src="https://hanikanaftchian.simplybook.it/v2/#book"
+                style={{ width: "100%", height: "100%", border: "none" }}
+                title="SimplyBook Reservation"
+                loading="lazy"
+              />
+            </div>
           </FadeIn>
         </div>
       </section>
-      <section style={{ padding: "40px 40px 100px", background: C.bg }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-          {IMAGES.videos.map((vimeoUrl, i) => (
+    </>
+  );
+}
+
+function VideoPage({ isMobile }) {
+  return (
+    <>
+      <section style={{ padding: isMobile ? "160px 20px 60px" : "160px 40px 60px", background: C.bg }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <FadeIn>
+            <SectionLabel>Mes réalisations vidéo</SectionLabel>
+            <SectionTitle>Vidéaste <Accent>Bruxelles</Accent></SectionTitle>
+          </FadeIn>
+        </div>
+      </section>
+
+      <section style={{ padding: isMobile ? "60px 20px 100px" : "60px 40px 100px", background: C.bg }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: isMobile ? 30 : 40 }}>
+          {IMAGES.videos.map((src, i) => (
             <FadeIn key={i} delay={i * 0.1}>
-              <div style={{ position: "relative", aspectRatio: "16/9", background: C.surface, overflow: "hidden" }}>
+              <div style={{ position: "relative", aspectRatio: "16/9", background: C.surface, borderRadius: 2, overflow: "hidden" }}>
                 <iframe
-                  src={vimeoUrl}
+                  src={src}
                   style={{ width: "100%", height: "100%", border: "none" }}
                   allow="autoplay; fullscreen; picture-in-picture"
                   allowFullScreen
@@ -1703,142 +1127,67 @@ function VideoPage({ navigate }) {
           ))}
         </div>
       </section>
-      <section style={{ padding: "80px 40px", background: C.bgAlt, borderTop: `1px solid ${C.border}`, textAlign: "center" }}>
-        <FadeIn>
-          <SectionTitle>Un projet <Accent>vidéo</Accent> en tête ?</SectionTitle>
-          <div style={{ marginTop: 32 }}>
-            <GoldButton onClick={() => navigate("/contact")}>Discutons-en</GoldButton>
-          </div>
-        </FadeIn>
-      </section>
     </>
   );
 }
 
-function PlaceholderPage({ title, navigate }) {
-  return (
-    <section style={{ padding: "160px 40px 100px", background: C.bg, minHeight: "100vh", textAlign: "center" }}>
-      <FadeIn>
-        <SectionLabel>En construction</SectionLabel>
-        <SectionTitle>{title}</SectionTitle>
-        <p style={{ fontFamily: F.body, fontSize: 16, color: C.textMuted, marginTop: 24 }}>
-          Cette page sera disponible dans la version Astro finale.
-        </p>
-        <div style={{ marginTop: 40 }}>
-          <GoldButton onClick={() => navigate("/")}>Retour à l'accueil</GoldButton>
-        </div>
-      </FadeIn>
-    </section>
-  );
-}
-
 // ════════════════════════════════════════════════════════════════
-// MAIN APP
+// MAIN COMPONENT
 // ════════════════════════════════════════════════════════════════
 
 export default function KanaftchianUltraPremium() {
-  const [currentSlug, setCurrentSlug] = useState("/");
+  const [currentPage, setCurrentPage] = useState("/");
+  const isMobile = useIsMobile();
   const scrollY = useScrollY();
 
   const navigate = useCallback((slug) => {
-    setCurrentSlug(slug);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setCurrentPage(slug);
+    window.scrollTo(0, 0);
   }, []);
 
-  const currentRoute = ROUTES[currentSlug] || "home";
-
-  const renderPage = () => {
-    switch (currentRoute) {
-      case "home":
-        return <HomePage navigate={navigate} />;
-      case "portrait":
-        return <GalleryPage navigate={navigate}
-          title="Séance photo portrait"
-          subtitle="Démarquez-vous"
-          description="Un portrait réussi ne se limite pas à une simple image ; c'est une expression de votre personnalité et de votre unicité."
-          images={[...IMAGES.portrait, ...IMAGES.portraitPage]}
-          heroImage={IMAGES.portraitPage[0]}
-        />;
-      case "mariage":
-        return <GalleryPage navigate={navigate}
-          title="Photographe de mariage"
-          subtitle="Portfolio mariage"
-          description="Je vous propose une approche moderne de la photographie de mariage en mêlant photo-reportage et photos d'art."
-          images={IMAGES.mariage}
-          heroImage={IMAGES.mariage[0]}
-        />;
-      case "studioPortfolio":
-        return <GalleryPage navigate={navigate}
-          title="Photos en studio"
-          subtitle="Portfolio studio"
-          description="Séances photo réalisées dans notre studio de Bruxelles avec éclairage professionnel."
-          images={IMAGES.studioPortfolio}
-          heroImage={IMAGES.studioPortfolio[0]}
-        />;
-      case "tarifs":
-        return <TarifsPage navigate={navigate} />;
-      case "studioPage":
-        return <StudioPage navigate={navigate} />;
-      case "references":
-        return <ReferencesPage navigate={navigate} />;
-      case "about":
-        return <AboutPage navigate={navigate} />;
-      case "contact":
-        return <ContactPage navigate={navigate} />;
-      case "reservation":
-        return <ReservationPage navigate={navigate} />;
-      case "photos":
-        return <GalleryPage navigate={navigate}
-          title="Portfolio complet"
-          subtitle="Explorez l'univers"
-          description="Du portrait artistique aux shootings corporate, découvrez l'ensemble de mes créations."
-          images={[...IMAGES.portrait, ...IMAGES.mariage.slice(0, 8), ...IMAGES.portraitPage, ...IMAGES.grossesse.slice(0, 6), ...IMAGES.paysages.slice(0, 8), ...IMAGES.studioPortfolio.slice(0, 8)]}
-        />;
-      case "grossesse":
-        return <GalleryPage navigate={navigate}
-          title="Photos de grossesse"
-          subtitle="Immortalisez ce moment unique"
-          description="Séance photo grossesse en studio ou en extérieur. Capturez la beauté de ce moment unique avec douceur et élégance."
-          images={IMAGES.grossesse}
-          heroImage={IMAGES.grossesse[0]}
-        />;
-      case "paysages":
-        return <GalleryPage navigate={navigate}
-          title="Paysages"
-          subtitle="La nature dans toute sa majesté"
-          description="De Bruxelles à Dubai, des Seychelles à l'Arizona — une collection de paysages capturés aux quatre coins du monde."
-          images={IMAGES.paysages}
-          heroImage={IMAGES.paysages[0]}
-        />;
-      case "video":
-        return <VideoPage navigate={navigate} />;
-      default:
-        return <HomePage navigate={navigate} />;
-    }
-  };
+  const pageKey = ROUTES[currentPage] || "home";
 
   return (
-    <div style={{ background: C.bg, color: C.text, minHeight: "100vh", fontFamily: F.body }}>
+    <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;1,300&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: ${C.bg}; overflow-x: hidden; }
-        ::selection { background: ${C.accent}30; color: ${C.white}; }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: ${C.bg}; }
-        ::-webkit-scrollbar-thumb { background: ${C.border}; }
-        ::-webkit-scrollbar-thumb:hover { background: ${C.accent}60; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        @keyframes scrollPulse { 0%,100% { opacity:.3; transform:scaleY(1); } 50% { opacity:.8; transform:scaleY(1.4); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        html { scroll-behavior: smooth; }
+        body { background: ${C.bg}; font-family: ${F.body}; color: ${C.text}; }
         img { user-select: none; -webkit-user-drag: none; }
+        button { font-family: inherit; }
+        ::selection { background: ${C.accent}40; color: ${C.text}; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: ${C.bg}; }
+        ::-webkit-scrollbar-thumb { background: ${C.accent}; border-radius: 4px; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        @keyframes scrollPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
       `}</style>
 
-      <Nav currentSlug={currentSlug} navigate={navigate} scrollY={scrollY} />
-      {renderPage()}
-      <Footer navigate={navigate} />
-    </div>
+      <Nav currentSlug={currentPage} navigate={navigate} scrollY={scrollY} isMobile={isMobile} />
+
+      <main style={{ minHeight: "100vh" }}>
+        {pageKey === "home" && <HomePage navigate={navigate} isMobile={isMobile} />}
+        {pageKey === "portrait" && <GalleryPage navigate={navigate} title="Portrait" subtitle="Portfolio" description="Portraits artistiques et professionnels" images={IMAGES.portrait} isMobile={isMobile} />}
+        {pageKey === "mariage" && <GalleryPage navigate={navigate} title="Mariage" subtitle="Portfolio" description="Les plus beaux moments de votre vie" images={IMAGES.mariage} isMobile={isMobile} />}
+        {pageKey === "grossesse" && <GalleryPage navigate={navigate} title="Grossesse" subtitle="Portfolio" description="Immortalisez votre attente" images={IMAGES.grossesse} isMobile={isMobile} />}
+        {pageKey === "paysages" && <GalleryPage navigate={navigate} title="Paysages" subtitle="Portfolio" description="Voyages et paysages du monde" images={IMAGES.paysages} isMobile={isMobile} />}
+        {pageKey === "studioPortfolio" && <GalleryPage navigate={navigate} title="Studio" subtitle="Portfolio" description="Productions photo en studio" images={IMAGES.studioPortfolio} isMobile={isMobile} />}
+        {pageKey === "tarifs" && <TarifsPage navigate={navigate} isMobile={isMobile} />}
+        {pageKey === "studioPage" && <StudioPage navigate={navigate} isMobile={isMobile} />}
+        {pageKey === "about" && <AboutPage navigate={navigate} isMobile={isMobile} />}
+        {pageKey === "references" && <ReferencesPage isMobile={isMobile} />}
+        {pageKey === "contact" && <ContactPage navigate={navigate} isMobile={isMobile} />}
+        {pageKey === "reservation" && <ReservationPage />}
+        {pageKey === "video" && <VideoPage isMobile={isMobile} />}
+        {(pageKey === "photos" || pageKey === "photos") && <GalleryPage navigate={navigate} title="Portfolio" subtitle="Découvrez mon univers" description="Une sélection de mes meilleures créations" images={[...IMAGES.portrait, ...IMAGES.mariage].slice(0, 16)} isMobile={isMobile} />}
+      </main>
+
+      <Footer navigate={navigate} isMobile={isMobile} />
+    </>
   );
 }
